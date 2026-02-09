@@ -1,0 +1,40 @@
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Panel de Administración') }}
+        </h2>
+    </x-slot>
+
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            
+            <!-- Resumen de Estadísticas -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <!-- Tarjeta Proyectos -->
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                    <div class="text-gray-900 text-xl font-bold">Proyectos</div>
+                    <div class="text-3xl text-indigo-600 font-extrabold mt-2">
+                        {{ \App\Models\Project::count() }}
+                    </div>
+                </div>
+
+                <!-- Tarjeta Mensajes -->
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                    <div class="text-gray-900 text-xl font-bold">Mensajes Nuevos</div>
+                    <div class="text-3xl text-green-600 font-extrabold mt-2">
+                        {{ \App\Models\Message::where('is_read', false)->count() }}
+                    </div>
+                </div>
+
+                <!-- Tarjeta Tecnologías -->
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                    <div class="text-gray-900 text-xl font-bold">Clientes</div>
+                    <div class="text-3xl text-purple-600 font-extrabold mt-2">
+                        {{ \App\Models\Client::count() }}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</x-app-layout>

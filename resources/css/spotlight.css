@@ -1,0 +1,60 @@
+/* resources/css/spotlight.css */
+
+.js-spotlight-card, .js-project-card {
+    position: relative;
+    z-index: 1; /* La tarjeta base */
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: white; 
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.dark .js-spotlight-card, .dark .js-project-card {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: #111827;
+}
+
+/* LA MAGIA DEL BORDE (Spotlight Aditivo) */
+.js-spotlight-card::before, .js-project-card::before {
+    content: "";
+    position: absolute;
+    inset: -1px; 
+    border-radius: inherit;
+    padding: 2px; 
+    
+    /* Subimos el z-index para que la luz se "apoye" sobre el borde real */
+    z-index: 2; 
+    
+    background: radial-gradient(
+        120px circle at var(--mouse-x) var(--mouse-y), 
+        rgba(79, 70, 229, 1) 0%, 
+        rgba(79, 70, 229, 0.4) 50%,
+        transparent 100%
+    );
+
+    -webkit-mask: 
+        linear-gradient(#ffffffcd 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.dark .js-spotlight-card::before, .dark .js-project-card::before {
+    background: radial-gradient(
+        120px circle at var(--mouse-x) var(--mouse-y), 
+        rgb(112, 126, 251) 0%, 
+        rgba(115, 128, 252, 0.5) 50%,
+        transparent 100%
+    );
+}
+
+/* ESTADO HOVER */
+.js-spotlight-card:hover::before, .js-project-card:hover::before {
+    opacity: 1;
+}
+
+/* IMPORTANTE: Hemos eliminado el "border-color: transparent" */
+/* Ahora el borde original de la card se queda visible siempre */
