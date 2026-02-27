@@ -32,6 +32,8 @@ Route::get('/proyectos', [PortfolioController::class, 'showAll'])->name('public.
 // Para mensajes de contacto
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
+// Ruta para "Sobre mí / Historia"
+Route::get('/sobre-mi',[PortfolioController::class, 'about'])->name('public.about');
 
 /*
 |--------------------------------------------------------------------------

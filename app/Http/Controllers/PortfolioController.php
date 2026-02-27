@@ -36,4 +36,10 @@ class PortfolioController extends Controller
 
         return view('public.projects', compact('projects'));
     }
+
+    //Método para la página de historia
+    public function about()
+    {
+        return view('public.about');
+    }
 }

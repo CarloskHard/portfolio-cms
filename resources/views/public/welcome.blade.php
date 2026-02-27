@@ -208,18 +208,21 @@
                 <div class="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12 items-center">
                     
                     <!-- Texto presentación -->
-                    <div class="mr-auto place-self-center lg:col-span-7 z-10">
+                    <!-- Cambios: order-2 (móvil abajo), lg:order-1 (desktop izquierda), text-center (móvil) -->
+                    <div class="w-full text-center lg:text-left place-self-center lg:col-span-7 z-10 order-2 lg:order-1">
                         <span class="inline-block py-1 px-3 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 text-sm font-semibold mb-4 animate-subtle-breath border border-indigo-200 dark:border-indigo-800/50">
                             🚀 Disponible para nuevos proyectos
                         </span>
-                        <h1 class="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl text-gray-900 dark:text-white">
+                        <!-- mx-auto para centrar en móvil y lg:mx-0 para alinear en desktop -->
+                        <h1 class="max-w-2xl mx-auto lg:mx-0 mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl text-gray-900 dark:text-white">
                             Hola 👋🏼, soy <br> <span class="text-indigo-600 dark:text-indigo-400">Carlos Codes</span>
                         </h1>
-                        <p class="max-w-2xl mb-8 font-light text-gray-600 dark:text-gray-400 lg:mb-8 md:text-lg lg:text-xl leading-relaxed">
+                        <p class="max-w-2xl mx-auto lg:mx-0 mb-8 font-light text-gray-600 dark:text-gray-400 lg:mb-8 md:text-lg lg:text-xl leading-relaxed">
                             Desarrollador Full Stack web y móvil
                         </p>
                         
-                        <div class="flex flex-wrap items-center gap-4">
+                        <!-- Botones y RRSS alineados al centro en móvil y a la izquierda en desktop -->
+                        <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4">
                             <a href="#projects" class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-white rounded-lg bg-gray-900 hover:bg-gray-800 dark:bg-indigo-600 dark:hover:bg-indigo-700 transition">
                                 Ver Proyectos
                             </a>
@@ -239,17 +242,30 @@
                     </div>
                     
                     <!-- Imagen -->
-                    <div class="hidden lg:mt-0 lg:col-span-5 lg:flex justify-end relative">
-                        <div class="relative w-80 h-80">
-                            <div class="absolute top-0 right-0 w-72 h-72 bg-indigo-200 dark:bg-indigo-900 rounded-full blur-3xl opacity-40"></div>
+                    <!-- Cambios: quitado 'hidden', order-1 (móvil arriba), mb-10 (margen inferior en móvil) y justificado centrado -->
+                    <div class="flex justify-center lg:justify-end relative order-1 lg:order-2 lg:col-span-5 mb-10 lg:mb-0">
+                        <!-- Tamaños adaptativos: w-56 en móvil, w-64 en tablets, w-80 en desktop -->
+                        <div class="relative w-56 h-56 sm:w-64 sm:h-64 lg:w-80 lg:h-80">
+                            <!-- Sombra blur escalada acorde a la imagen -->
+                            <div class="absolute top-0 right-0 w-48 h-48 sm:w-56 sm:h-56 lg:w-72 lg:h-72 bg-indigo-200 dark:bg-indigo-900 rounded-full blur-3xl opacity-40"></div>
                             
                             <div class="relative w-full h-full rounded-full border-4 border-white dark:border-gray-800 shadow-xl overflow-hidden bg-gray-100 dark:bg-gray-800">
-                                <img src="{{ asset('img/me.png') }}" onerror="this.src='{{ asset('img/logo.png') }}'" alt="Carlos Codes" class="w-full h-full object-cover">
+                                <!-- IMAGEN MODO CLARO -->
+                                <img src="{{ asset('img/me-light.png') }}" 
+                                    onerror="this.src='{{ asset('img/logo.png') }}'" 
+                                    alt="Carlos Codes" 
+                                    class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-100 dark:opacity-0">
+                                    
+                                <!-- IMAGEN MODO OSCURO -->
+                                <img src="{{ asset('img/me.png') }}" 
+                                    onerror="this.src='{{ asset('img/logo.png') }}'" 
+                                    alt="Carlos Codes" 
+                                    class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0 dark:opacity-100">
                             </div>
 
                             <!-- Icono Portatil -->
-                            <div class="absolute bottom-4 left-0 bg-white dark:bg-gray-800 p-3 rounded-full shadow-lg border border-gray-100 dark:border-gray-700 text-indigo-600 dark:text-indigo-400 animate-floating">
-                                <x-icons.laptop class="w-8 h-8" />
+                            <div class="absolute bottom-2 left-0 sm:bottom-4 sm:left-0 bg-white dark:bg-gray-800 p-3 rounded-full shadow-lg border border-gray-100 dark:border-gray-700 text-indigo-600 dark:text-indigo-400 animate-floating">
+                                <x-icons.laptop class="w-6 h-6 sm:w-8 sm:h-8" />
                             </div>
                         </div>
                     </div>
@@ -430,67 +446,88 @@
             </section>
 
             <!-- SOBRE MÍ SECTION -->
-            <section id="about" class="py-24 bg-gray-50 dark:bg-gray-800/50 transition-colors duration-300">
-                <div class="max-w-screen-xl px-4 mx-auto">
-                    <div class="flex flex-col lg:flex-row gap-12 items-center">
+            <section id="about" class="relative py-24 bg-gray-50 dark:bg-gray-800/30 transition-colors duration-300 overflow-hidden">
+                
+                <!-- Decoración de fondo (Opcional) -->
+                <div class="absolute top-0 right-0 -mr-20 -mt-20 w-72 h-72 bg-indigo-400/10 dark:bg-indigo-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="max-w-screen-xl px-4 mx-auto relative z-10">
+                    <!-- CAMBIO: Usamos Grid con un gap grande (lg:gap-20) -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
                         
-                        <!-- Columna Imagen/Decoración -->
-                        <div class="w-full lg:w-1/3 relative group">
-                            <div class="relative z-10 overflow-hidden rounded-2xl shadow-2xl transition-transform duration-500 group-hover:-translate-y-2">
-                                <!-- Puedes poner otra foto tuya o una representativa -->
-                                <img src="{{ asset('img/me-alt.png') }}" onerror="this.src='{{ asset('img/logo.png') }}'" alt="Carlos trabajando" class="w-full h-auto object-cover">
-                                <div class="absolute inset-0 bg-indigo-600/10"></div>
+                        <!-- Columna Imagen (Ocupa 5 de 12 columnas) -->
+                        <!-- AÑADIDO: lg:pr-10 para que la placa flotante tenga su propio espacio y no pise el texto -->
+                        <div class="lg:col-span-5 relative group lg:pr-10"> 
+                            
+                            <!-- Marco decorativo de fondo -->
+                            <div class="absolute inset-0 bg-gradient-to-tr from-indigo-500 to-blue-500 rounded-2xl transform rotate-3 scale-105 opacity-20 dark:opacity-40 transition-transform duration-500 group-hover:rotate-6"></div>
+                            
+                            <div class="relative overflow-hidden rounded-2xl shadow-xl transition-transform duration-500 group-hover:-translate-y-2 border border-white/50 dark:border-gray-700 bg-white dark:bg-gray-800 p-2">
+                                <div class="overflow-hidden rounded-xl">
+                                    <img src="{{ asset('img/me-alt.png') }}" onerror="this.src='{{ asset('img/logo.png') }}'" alt="Carlos trabajando" class="w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-105">
+                                </div>
                             </div>
-                            <!-- Elementos decorativos de fondo -->
-                            <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl"></div>
-                            <div class="absolute -top-6 -left-6 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl"></div>
+
+                            <!-- Insignia flotante (El -right-6 ahora tiene espacio gracias al lg:pr-10) -->
+                            <div class="absolute -bottom-6 -right-2 lg:right-4 bg-white dark:bg-gray-900 p-4 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 flex items-center gap-4 animate-floating z-20">
+                                <div class="bg-indigo-100 dark:bg-indigo-900/50 p-3 rounded-full text-indigo-600 dark:text-indigo-400">
+                                    <x-icons.cpu class="w-6 h-6" />
+                                </div>
+                                <div class="whitespace-nowrap"> <!-- Evita que el texto de la placa se rompa -->
+                                    <p class="text-[10px] text-gray-500 dark:text-gray-400 font-semibold uppercase tracking-wider">Background</p>
+                                    <p class="text-sm font-bold text-gray-900 dark:text-white">Hardware & Software</p>
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- Columna Texto -->
-                        <div class="w-full lg:w-2/3">
-
-                            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">
-                                Arquitectura sólida para <span class="text-indigo-600 dark:text-indigo-400">ideas complejas.</span>
+                        <!-- Columna Texto (Ocupa 7 de 12 columnas) -->
+                        <div class="lg:col-span-7">
+                            <span class="text-indigo-600 dark:text-indigo-400 font-semibold tracking-wider uppercase text-sm mb-3 block">Conoce mi perfil</span>
+                            
+                            <h2 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-white mb-6 leading-[1.15]">
+                                De la precisión aeroespacial a la <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500 dark:from-indigo-400 dark:to-blue-400">arquitectura de software.</span>
                             </h2>
 
-                            <div class="space-y-5 text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+                            <div class="space-y-4 text-base md:text-lg text-gray-600 dark:text-gray-300 leading-relaxed mb-8">
                                 <p>
-                                    ¡Hola! Soy Carlos. Mi trayectoria empezó en el desarrollo de <strong class="text-gray-900 dark:text-white font-semibold">videojuegos</strong>, donde aprendí el valor del rendimiento y la optimización de recursos.
+                                    Llevo más de 7 años escribiendo código. Empecé diseñando PCBs en el sector aeroespacial, un entorno donde <strong>un fallo no es una opción</strong>.
                                 </p>
                                 <p>
-                                    He trabajado en entornos de alta exigencia dentro del <strong class="text-gray-900 dark:text-white font-semibold">ecosistema Apple</strong> y diseñado la lógica central de sistemas críticos como <strong class="text-gray-900 dark:text-white font-semibold">CRMs y ERPs</strong>.
-                                </p>
-                                <p>
-                                    Hoy me enfoco en la <strong class="text-gray-900 dark:text-white font-semibold">arquitectura de software</strong> aplicada al desarrollo Web y Móvil. Mi prioridad es construir código limpio, escalable y preparado para crecer sin deuda técnica.
+                                    Esa misma mentalidad de robustez es la que aplico hoy al desarrollo. Dejé los transistores para licenciarme en DAW y DAM, y hoy construyo sistemas que no solo funcionan, sino que escalan.
                                 </p>
                             </div>
 
-
-                            <!-- Estadísticas rápidas -->
-                            <div class="grid grid-cols-2 md:grid-cols-3 gap-6 mt-10">
-                                <!-- Experiencia Total -->
-                                <div class="flex flex-col">
-                                    <span class="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">+5</span>
-                                    <span class="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Años de experiencia</span>
+                            <!-- Especialidades -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
+                                <!-- ERP Card -->
+                                <div class="flex items-center gap-3 bg-white dark:bg-gray-800/50 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+                                    <div class="text-indigo-500">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"></path></svg>
+                                    </div>
+                                    <span class="font-medium text-gray-800 dark:text-gray-200">Sistemas ERP/CRM</span>
                                 </div>
-
-                                <!-- Enfoque en Sistemas Complejos -->
-                                <div class="flex flex-col">
-                                    <span class="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">ERPs/CRMs</span>
-                                    <span class="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Desarrollados</span>
-                                </div>
-
-                                <!-- Versatilidad Técnica -->
-                                <div class="flex flex-col col-span-2 md:col-span-1">
-                                    <span class="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">SOLID</span>
-                                    <span class="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Arquitectura y Patrones</span>
+                                <!-- App Card -->
+                                <div class="flex items-center gap-3 bg-white dark:bg-gray-800/50 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+                                    <div class="text-indigo-500">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                                    </div>
+                                    <span class="font-medium text-gray-800 dark:text-gray-200">Compose Multiplatform</span>
                                 </div>
                             </div>
+
+                            <!-- Botón -->
+                            <a href="{{ route('public.about') }}" class="group inline-flex items-center justify-center px-6 py-3.5 text-base font-semibold text-white bg-gray-900 hover:bg-gray-800 dark:bg-indigo-600 dark:hover:bg-indigo-700 rounded-lg transition-all shadow-md hover:shadow-lg">
+                                Conoce mi historia completa
+                                <svg class="w-5 h-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                                </svg>
+                            </a>
                         </div>
 
                     </div>
                 </div>
             </section>
+
 
             <!-- SECCIÓN DE CONTACTO -->
             <section id="contact" class="py-20 bg-gray-50 dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700 transition-colors duration-300">
