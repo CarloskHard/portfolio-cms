@@ -77,7 +77,7 @@ class ProjectController extends Controller
         $data = $request->validate([
             'title' => 'required|max:255',
             'description' => 'required',
-            'image' => 'nullable|image|max:2048',
+            'image' => 'nullable|image|max:5120',
             'url_repo' => 'nullable|url',
             'url_demo' => 'nullable|url',
             'visibility' => 'required|in:public,private,draft',

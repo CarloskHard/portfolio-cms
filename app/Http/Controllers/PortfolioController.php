@@ -22,7 +22,7 @@ class PortfolioController extends Controller
         $technologies = Technology::all();
 
         // Devolvemos la vista (el HTML) pasándole los datos
-        return view('public.welcome', compact('projects', 'technologies'));
+        return view('public.home', compact('projects', 'technologies'));
     }
 
     // Método para la página de "Ver todos los proyectos"

@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ContactController;
-use App\Http\Controllers\PublicMessageController;
 
 //Rutas Privadas
 use App\Http\Controllers\ProfileController;
@@ -30,7 +29,7 @@ Route::get('/', [PortfolioController::class, 'index'])->name('home');
 Route::get('/proyectos', [PortfolioController::class, 'showAll'])->name('public.public-projects');
 
 // Para mensajes de contacto
-Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+Route::post('/contact', [ContactController::class, 'storePublicMessage'])->name('contact.store');
 
 // Ruta para "Sobre mí / Historia"
 Route::get('/sobre-mi',[PortfolioController::class, 'about'])->name('public.about');

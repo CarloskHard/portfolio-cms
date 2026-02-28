@@ -6,11 +6,12 @@ use App\Models\Client;
 use App\Models\Contact;
 use App\Models\ContactMethod;
 use Illuminate\Http\Request;
+use App\Models\Message;
 
 class ContactController extends Controller
 {
     // Guardar un nuevo contacto asociado a un cliente
-    public function store(Request $request, Client $client)
+    public function storeContact(Request $request, Client $client)
     {
         $request->validate([
             'first_name' => 'required|string|max:255',
@@ -56,5 +57,39 @@ class ContactController extends Controller
     {
         $contact->delete();
         return back()->with('success', 'Contacto eliminado.');
+    }
+
+     public function storePublicMessage(Request $request)
+    {
+        // 1. Validar (Laravel automáticamente devolverá JSON si la petición es AJAX)
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'content' => 'required|string|min:10',
+        ],[
+            'content.min' => 'El mensaje debe tener al menos 10 caracteres para poder ayudarte mejor.'
+        ]);
+
+        // 2. Crear el mensaje
+        // No pasamos contact_id porque es un desconocido (null)
+        Message::create([
+            'sender_name' => $validated['name'],
+            'sender_email' => $validated['email'],
+            'subject' => 'Nuevo mensaje web de ' . $validated['name'],
+            'content' => $validated['content'],
+            'is_read' => false,
+        ]);
+
+        // 3. Respuesta Profesional
+        // Si la petición viene de nuestro script Fetch (AJAX):
+        if ($request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => '¡Tu mensaje está en camino! Te contestaré lo antes posible.'
+            ]);
+        }
+
+        // Fallback clásico (En vez de URL::previous(), forzamos a que vaya al ancla de forma limpia)
+        return redirect('/#contact')->with('status', '¡Tu mensaje está en camino! Te contestaré lo antes posible.');
     }
 }
