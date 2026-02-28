@@ -3,7 +3,8 @@
 @section('title', 'Proyectos')
 
 @section('content')
-<div class="max-w-screen-xl px-4 mx-auto">
+<!-- Añadido pt-28 (y lg:pt-36) para evitar que el header fijo tape el contenido -->
+<div class="max-w-screen-xl px-4 mx-auto pt-28 pb-16 lg:pt-36 min-h-screen">
     
     <div class="text-center mb-16">
         <h1 class="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">Portfolio Completo</h1>

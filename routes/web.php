@@ -26,7 +26,7 @@ use App\Http\Controllers\MessageController;
 Route::get('/', [PortfolioController::class, 'index'])->name('home');
 
 // Ruta para ver el catálogo completo
-Route::get('/proyectos', [PortfolioController::class, 'showAll'])->name('public.public-projects');
+Route::get('/proyectos', [PortfolioController::class, 'showAll'])->name('public.projects');
 
 // Para mensajes de contacto
 Route::post('/contact', [ContactController::class, 'storePublicMessage'])->name('contact.store');

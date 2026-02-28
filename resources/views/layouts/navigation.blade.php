@@ -1,4 +1,4 @@
-{{-- COMPONENTE DE NAVEGACIÓN (PARTIAL): Contiene exclusivamente el código del menú, enlaces y perfil de usuario (Ende se usará solo en la parte admin). Se inserta en los Layouts mediante @include. --}}
+{{-- COMPONENTE DE NAVEGACIÓN EN PARTE PRIVADA(PARTIAL): Contiene exclusivamente el código del menú, enlaces y perfil de usuario (Ende se usará solo en la parte admin). Se inserta en los Layouts mediante @include. --}}
 
 <nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
     <!-- Primary Navigation Menu -->

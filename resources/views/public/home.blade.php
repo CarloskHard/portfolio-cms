@@ -2,7 +2,11 @@
 
 @section('content')
 
-    <!-- HERO SECTION -->
+    <!--
+    |------------------------------------------------------------------|
+    |  ##########               HERO SECTION               ##########  |                
+    |------------------------------------------------------------------|
+    -->
     <section id="home" class="relative pt-32 pb-20 bg-white dark:bg-gray-900 overflow-hidden transition-colors duration-300">
         <canvas id="code-canvas" class="absolute top-0 left-0 w-full h-full pointer-events-none opacity-[1] dark:opacity-[1]"></canvas>
 
@@ -55,7 +59,12 @@
         </div>
     </section>
 
-    <!-- SOBRE MÍ SECTION -->
+
+    <!--
+    |------------------------------------------------------------------|
+    |  ##########             SOBRE MI SECTION             ##########  |                
+    |------------------------------------------------------------------|
+    -->
     <section id="about" class="relative py-24 bg-gray-50 dark:bg-gray-800/30 transition-colors duration-300 overflow-hidden">
         <div class="absolute top-0 right-0 -mr-20 -mt-20 w-72 h-72 bg-indigo-400/10 dark:bg-indigo-600/10 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -108,11 +117,11 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
                         <div class="flex items-center gap-3 bg-white dark:bg-gray-800/50 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
                             <div class="text-indigo-500"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"></path></svg></div>
-                            <span class="font-medium text-gray-800 dark:text-gray-200">Sistemas ERP/CRM</span>
+                            <span class="font-medium text-gray-800 dark:text-gray-200">Sistemas ERP, CRM y CMS</span>
                         </div>
                         <div class="flex items-center gap-3 bg-white dark:bg-gray-800/50 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
                             <div class="text-indigo-500"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg></div>
-                            <span class="font-medium text-gray-800 dark:text-gray-200">Compose Multiplatform</span>
+                            <span class="font-medium text-gray-800 dark:text-gray-200">Desarrollo móvil</span>
                         </div>
                     </div>
 
@@ -126,14 +135,21 @@
         </div>
     </section>
 
-    <!-- SKILLS SECTION -->
+
+
+    <!--
+    |------------------------------------------------------------------|
+    |  ##########              SKILLS SECTION              ##########  |                
+    |------------------------------------------------------------------|
+    -->
+
     <section id="skills" x-data="skillsComponent()" class="py-20 bg-gray-50 dark:bg-gray-800 border-y border-gray-100 dark:border-gray-700 transition-colors duration-300">
         <div class="max-w-screen-xl px-4 mx-auto relative">
             <div class="mb-12">
                 <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Stack Tecnológico</h2>
                 <div class="w-20 h-1.5 bg-indigo-600 mt-4 rounded-full"></div>
                 <p class="text-gray-600 dark:text-gray-300 max-w-4xl mt-4 text-lg leading-relaxed">
-                    Trato con una gran gama de tecnologías pues he trabajado desde webs dinámicas (Desde portfolios hasta CRMs, ERPs y CMS) hasta aplicaciones móviles y multiplataforma en completo fullstack.
+                    Trabajo con una gran gama de tecnologías pues he trabajo tanto en desarrollo web (Portfolios, CRMs, ERPs y CMS) como en aplicaciones móviles y multiplataforma. Todo en <strong>completo fullstack</strong>.
                 </p>
             </div>
             
@@ -250,7 +266,12 @@
         </div>
     </section>
 
-    <!-- PROJECTS SECTION -->
+
+    <!--
+    |------------------------------------------------------------------|
+    |  ##########             PROJECTS SECTION             ##########  |                
+    |------------------------------------------------------------------|
+    -->
     <section id="projects" class="py-24 bg-white dark:bg-gray-900 transition-colors duration-300">
         <div class="max-w-screen-xl px-4 mx-auto">
             <div class="mb-16">
@@ -261,6 +282,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 @forelse($projects->take(3) as $project)
                     <article class="project-card js-project-card bg-gray-50 dark:bg-gray-800/50 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 flex flex-col h-full shadow-sm">
+                        <!-- Imagen -->
                         <div class="relative aspect-video overflow-hidden bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
                             @if($project->image_url)
                                 <img src="{{ asset($project->image_url) }}" class="w-full h-full object-cover">
@@ -269,11 +291,14 @@
                             @endif
                         </div>
 
+                        <!-- Contenido -->
                         <div class="p-6 flex-grow flex flex-col relative z-10">
                             <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{ $project->title }}</h3>
                             <p class="text-gray-600 dark:text-gray-400 text-sm mb-6 flex-grow leading-relaxed">{{ $project->description }}</p>
 
-                            <div class="flex flex-wrap gap-2 pt-4 border-t border-gray-200 dark:border-gray-700">
+                            <!-- Tecnologías -->
+                            <!--
+                            <div class="flex flex-wrap gap-2 pt-4 border-t border-gray-200 dark:border-gray-700 mb-4">
                                 @php
                                     $techs = is_string($project->technologies) ? explode(',', $project->technologies) : $project->technologies;
                                 @endphp
@@ -281,6 +306,23 @@
                                     @foreach($techs as $tech)
                                         <span class="skill-tag">{{ trim($tech instanceof \App\Models\Technology ? $tech->name : $tech) }}</span>
                                     @endforeach
+                                @endif
+                            </div>
+                            -->
+
+                            <!-- BOTONES DE GITHUB Y DEMO-->
+                            <div class="flex gap-4 mt-auto pt-4 border-t border-gray-200 dark:border-gray-700">
+                                @if($project->url_repo)
+                                    <a href="{{ $project->url_repo }}" target="_blank" class="text-xs font-bold uppercase text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                                        GitHub
+                                    </a>
+                                @endif
+                                @if($project->url_demo)
+                                    <a href="{{ $project->url_demo }}" target="_blank" class="text-xs font-bold uppercase text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white flex items-center gap-1">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                        Demo
+                                    </a>
                                 @endif
                             </div>
                         </div>
@@ -300,7 +342,11 @@
     </section>
 
 
-    <!-- SECCIÓN DE CONTACTO -->
+    <!--
+    |------------------------------------------------------------------|
+    |  ##########             CONTACT SECTION              ##########  |                
+    |------------------------------------------------------------------|
+    -->
     <section id="contact" class="py-20 bg-gray-50 dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700 transition-colors duration-300">
         <div class="max-w-screen-md mx-auto px-4">
             <div class="text-center mb-12">
@@ -353,6 +399,13 @@
 
 @endsection
 
+
+
+<!--
+    |------------------------------------------------------------------|
+    |  ##########               SCRIPTS JS                 ##########  |                
+    |------------------------------------------------------------------|
+-->
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -456,7 +509,7 @@ document.addEventListener('alpine:init', () => {
                 icon: 'M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9',
                 color: 'text-indigo-600 dark:text-indigo-400',
                 bg: 'bg-indigo-50 dark:bg-indigo-900/30',
-                description: 'Mi núcleo de trabajo diario. Construyo plataformas robustas y escalables dominando tanto el ciclo backend como el renderizado frontend.',
+                description: 'Mi núcleo de trabajo diario. Monto webs de portfolio, tiendas online, ERPs(Gestión de recursos internos para negocios) y CRMs.(Sistemas internos para gestión de clientes).',
                 technologies:[
                     { name: 'Laravel', badge: 'https://img.shields.io/badge/Laravel-FF2D20?style=flat&logo=laravel&logoColor=white', description: 'Framework principal para el backend. Desarrollo de APIs REST complejas, autenticación segura, middlewares, colas de trabajo y lógica de negocio mediante Eloquent ORM.' },
                     { name: 'PHP', badge: 'https://img.shields.io/badge/PHP-777BB4?style=flat&logo=php&logoColor=white', description: 'Lenguaje base de mi stack backend. Escritura de código limpio, fuertemente tipado en sus últimas versiones y enfocado en Programación Orientada a Objetos.' },
@@ -473,7 +526,7 @@ document.addEventListener('alpine:init', () => {
                 icon: 'M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z',
                 color: 'text-green-600 dark:text-green-400',
                 bg: 'bg-green-50 dark:bg-green-900/30',
-                description: 'Creación de ecosistemas de software interactivos. Desde aplicaciones móviles nativas conectadas a mis propios backends, hasta lógicas de alto rendimiento.',
+                description: 'Desarrollo apps nativas para Android que luego también puedo adaptar a dispositivos de Apple (IOS). Además he diseñado videojuegos en Unity para móviles y VR.',
                 technologies:[
                     { name: 'Kotlin', badge: 'https://img.shields.io/badge/Kotlin-7F52FF?style=flat&logo=kotlin&logoColor=white', description: 'Desarrollo de aplicaciones nativas para el ecosistema Android. Manejo de corrutinas, inyección de dependencias e integración con APIs REST.' },
                     { name: 'Android Studio', badge: 'https://img.shields.io/badge/Android%20Studio-3DDC84?style=flat&logo=android-studio&logoColor=white', description: 'Entorno de desarrollo principal para el ciclo de vida completo de la app: perfilado de memoria, diseño XML/Compose y compilación para producción.' },
@@ -487,7 +540,7 @@ document.addEventListener('alpine:init', () => {
                 icon: 'M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z',
                 color: 'text-pink-600 dark:text-pink-400',
                 bg: 'bg-pink-50 dark:bg-pink-900/30',
-                description: 'Digitalización de negocios. Implemento tiendas online y las integro con sistemas de facturación para automatizar los flujos empresariales.',
+                description: 'Digitalizo negocios implementando tiendas online y desarrollando programas internos de gestión de los recursos (ERP) y clientes (CRM).',
                 technologies:[
                     { name: 'PrestaShop', badge: 'https://img.shields.io/badge/PrestaShop-df0067?style=flat&logo=prestashop&logoColor=white', description: 'Creación y configuración de tiendas B2C/B2B avanzadas. Desarrollo de módulos a medida en PHP, overrides y adaptación de plantillas Smarty.' },
                     { name: 'Dolibarr ERP', badge: 'https://img.shields.io/badge/Dolibarr_ERP-2980B9?style=flat', description: 'Implantación del sistema para control de facturación, stock y clientes (CRM). Programación de integraciones por API para sincronizarlo con tiendas web.' },
@@ -500,7 +553,7 @@ document.addEventListener('alpine:init', () => {
                 icon: 'M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4',
                 color: 'text-blue-600 dark:text-blue-400',
                 bg: 'bg-blue-50 dark:bg-blue-900/30',
-                description: 'Diseño estructuras de datos asegurando integridad relacional y eficiencia en consultas complejas para sostener la lógica de negocio.',
+                description: 'Todo proyecto complejo en el que trabajo requiere gestión de datos: Diseño estructuras de datos buscando los mejores patrones de diseño para asegurar la integridad y escalabilidad de los datos.',
                 technologies:[
                     { name: 'MySQL', badge: 'https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=mysql&logoColor=white', description: 'Motor relacional principal para webs. Diseño esquemas normalizados, optimizo índices y escribo consultas crudas complejas para reportes.' },
                     { name: 'MariaDB', badge: 'https://img.shields.io/badge/MariaDB-003545?style=flat&logo=mariadb&logoColor=white', description: 'Despliegue como alternativa OpenSource de alto rendimiento a MySQL en servidores Linux (VPS), garantizando la seguridad de los datos.' },
@@ -515,7 +568,7 @@ document.addEventListener('alpine:init', () => {
                 icon: 'M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2',
                 color: 'text-orange-600 dark:text-orange-400',
                 bg: 'bg-orange-50 dark:bg-orange-900/30',
-                description: 'No solo escribo código, también lo pongo en producción. Gestiono los servidores, el control de versiones y el ciclo de testing.',
+                description: 'No solo escribo código, también lo pongo en producción. Publico las aplicaciones y gestiono los servidores, el control de versiones y el posicionamiento en motores de búsqueda (SEO).',
                 technologies:[
                     { name: 'Docker', badge: 'https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white', description: 'Containerización de entornos (Sail en Laravel) para garantizar que el software funcione idéntico en desarrollo, staging y producción.' },
                     { name: 'Nginx', badge: 'https://img.shields.io/badge/Nginx-009639?style=flat&logo=nginx&logoColor=white', description: 'Configuración como proxy inverso y servidor web de alto rendimiento en entornos VPS para servir aplicaciones Laravel y Node.' },
@@ -532,7 +585,7 @@ document.addEventListener('alpine:init', () => {
                 icon: 'M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
                 color: 'text-purple-600 dark:text-purple-400',
                 bg: 'bg-purple-50 dark:bg-purple-900/30',
-                description: 'La diferencia entre un código que "funciona" y uno "profesional". Aplico principios de ingeniería para crear software escalable y libre de deuda técnica.',
+                description: 'La diferencia entre un código que "funciona" y uno "profesional". Me tomo en serio estudiar y aplicar principios de ingeniería para crear software escalable y libre de deuda técnica.',
                 technologies:[
                     { name: 'Clean Architecture', badge: 'https://img.shields.io/badge/Clean_Architecture-607D8B?style=flat', description: 'Separación estricta del código en capas (Dominio, Casos de Uso, Infraestructura). Permite cambiar la base de datos o el framework sin afectar la lógica del negocio.' },
                     { name: 'SOLID Principles', badge: 'https://img.shields.io/badge/SOLID_Principles-607D8B?style=flat', description: 'Aplicación constante de los 5 principios. Diseño clases con responsabilidad única, inyección de dependencias e interfaces claras para código altamente testeable.' },
