@@ -59,6 +59,114 @@
         </div>
     </section>
 
+    <!--
+    |------------------------------------------------------------------|
+    |  ##########             SERVICIOS SECTION            ##########  |                
+    |------------------------------------------------------------------|
+    -->
+    <section id="services" class="relative py-24 bg-white dark:bg-gray-900 transition-colors duration-300 overflow-hidden">
+        <!-- Decoración de fondo suave -->
+        <div class="absolute top-0 left-0 -ml-20 -mt-20 w-72 h-72 bg-blue-400/10 dark:bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-screen-xl px-4 mx-auto relative z-10">
+            
+            <!-- Cabecera de la sección -->
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <div class="flex items-center justify-center gap-2 mb-4">
+                    <span class="relative flex h-3 w-3">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
+                    </span>
+                    <span class="text-blue-600 dark:text-blue-400 font-bold tracking-widest uppercase text-xs">
+                        ¿Qué puedo hacer por ti?
+                    </span>
+                </div>
+                
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-white mb-6 leading-[1.15]">
+                    Construye conmigo tu
+                    <p> <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">web o app móvil</span></p>
+                </h2>
+                <p class="text-base md:text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+                    Soluciones tecnológicas a medida para impulsar tu carrera o tu negocio. Desde una presencia online profesional hasta herramientas avanzadas de gestión.
+                </p>
+            </div>
+
+            <!-- Grid de Servicios -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                <!-- Servicio 1: Portfolio -->
+                <div class="js-spotlight-card group !bg-gray-50 dark:!bg-gray-800/40 p-8 rounded-2xl border border-gray-100 dark:border-gray-700/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+                    <div class="w-14 h-14 bg-white dark:bg-gray-800 rounded-xl shadow-sm flex items-center justify-center mb-6 text-indigo-500 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Páginas Web y Portfolios</h3>
+                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                        Destaca en internet con una web rápida, moderna y optimizada. Ideal para marca personal, creativos e individuos que quieren mostrar su trabajo al mundo.
+                    </p>
+                    {{-- Efecto de resplandor sutil al fondo esquina inferior derecha --}}
+                    <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl group-hover:bg-indigo-500/20 transition-colors duration-500"></div>
+                </div>
+
+                <!-- Servicio 2: ERP & CRM -->
+                <div class="js-spotlight-card group !bg-gray-50 dark:!bg-gray-800/40 group bg-gray-50 dark:bg-gray-800/40 p-8 rounded-2xl border border-gray-100 dark:border-gray-700/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+                    <div class="w-14 h-14 bg-white dark:bg-gray-800 rounded-xl shadow-sm flex items-center justify-center mb-6 text-indigo-500 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Sistemas de Gestión</h3>
+                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                        Desarrollo de ERPs y CRMs a medida. Optimiza el tiempo de tu empresa organizando a tus clientes, facturación y procesos internos en un solo lugar seguro.
+                    </p>
+                    {{-- Efecto de resplandor sutil al fondo esquina inferior derecha --}}
+                    <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl group-hover:bg-indigo-500/20 transition-colors duration-500"></div>
+                </div>
+
+                <!-- Servicio 3: Apps Móviles -->
+                <div class="js-spotlight-card group !bg-gray-50 dark:!bg-gray-800/40 group bg-gray-50 dark:bg-gray-800/40 p-8 rounded-2xl border border-gray-100 dark:border-gray-700/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+                    <div class="w-14 h-14 bg-white dark:bg-gray-800 rounded-xl shadow-sm flex items-center justify-center mb-6 text-indigo-500 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Aplicaciones Móviles</h3>
+                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                        Llevo tu idea a los bolsillos de tus usuarios. Desarrollo aplicaciones intuitivas, rápidas y listas para ser publicadas en las tiendas oficiales.
+                    </p>
+                    {{-- Efecto de resplandor sutil al fondo esquina inferior derecha --}}
+                    <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl group-hover:bg-indigo-500/20 transition-colors duration-500"></div>
+                </div>
+            </div>
+
+            <!-- Banner de Oferta y CTA -->
+            <div class="relative bg-gradient-to-br from-indigo-50 via-white to-blue-50 dark:from-gray-800 dark:via-gray-800 dark:to-indigo-900/30 rounded-3xl p-8 md:p-12 border border-indigo-100 dark:border-gray-700 overflow-hidden shadow-lg">
+                <!-- Decoración fondo banner -->
+                <div class="absolute right-0 top-0 w-64 h-64 bg-gradient-to-br from-indigo-400 to-blue-500 opacity-10 dark:opacity-20 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
+                
+                <div class="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8 text-center lg:text-left">
+                    <div class="max-w-2xl">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 text-sm font-semibold mb-4">
+                            <span>🎁 Oferta especial por tiempo limitado</span>
+                        </div>
+                        <h3 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                            Prototipo gratuito, sin compromiso.
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-lg">
+                            Solo tienes que contarme tu idea. Diseñaré un prototipo visual para que veas cómo luciría tu proyecto <strong>totalmente gratis y sin compromiso</strong>. Si el resultado te apasiona entonces podemos proceder a hacerlo realidad por un precio super competitivo.
+                        </p>
+                    </div>
+                    
+<div class="flex-shrink-0 flex flex-col items-center lg:items-end gap-3">
+    <a href="#contact" class="group relative inline-flex items-center justify-center px-8 py-4 w-full sm:w-auto text-base font-medium text-gray-900 dark:text-white bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-xl overflow-hidden transition-all duration-300 active:scale-95 shadow-sm">
+        <!-- Fondo animado que entra por la izquierda -->
+        <span class="absolute inset-0 w-full h-full bg-gray-100 dark:bg-gray-700 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out"></span>
+        
+        <!-- El texto debe tener z-10 para quedar sobre el fondo que entra -->
+        <span class="relative z-10">¡Me interesa!</span>
+    </a>
+    <span class="text-sm text-gray-500 dark:text-gray-400">Abierto a nuevas contrataciones</span>
+</div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
 
     <!--
     |------------------------------------------------------------------|
@@ -156,7 +264,7 @@
             <!-- Grid Principal (6 Tarjetas) -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <template x-for="(skill, key) in skillsData" :key="key">
-                    <div @click="openModal(key)" class="skill-card js-spotlight-card group cursor-pointer bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-indigo-500/10 hover:shadow-lg hover:border-indigo-400 dark:hover:border-indigo-500 hover:-translate-y-1 flex flex-col h-full relative overflow-hidden">
+                    <div @click="openModal(key)" class="group bg-white dark:bg-gray-900 js-spotlight-card rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-indigo-500/10 hover:shadow-lg hover:border-indigo-400 dark:hover:border-indigo-500 hover:-translate-y-1 flex flex-col h-full relative overflow-hidden">
                         <div class="flex items-center gap-4 mb-5 relative z-10">
                             <div :class="`p-3 rounded-xl ${skill.bg} ${skill.color} transition-transform group-hover:scale-110`">
                                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
