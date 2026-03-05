@@ -175,6 +175,7 @@
     -->
     <section id="about" class="relative py-24 bg-gray-50 dark:bg-gray-800/30 transition-colors duration-300 overflow-hidden">
         <div class="absolute top-0 right-0 -mr-20 -mt-20 w-72 h-72 bg-indigo-400/10 dark:bg-indigo-600/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-indigo-500/10 dark:bg-indigo-500/18 rounded-full blur-3xl pointer-events-none hidden md:block"></div>
 
         <div class="max-w-screen-xl px-4 mx-auto relative z-10">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
@@ -264,7 +265,7 @@
             <!-- Grid Principal (6 Tarjetas) -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <template x-for="(skill, key) in skillsData" :key="key">
-                    <div @click="openModal(key)" class="group bg-white dark:bg-gray-900 js-spotlight-card rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-indigo-500/10 hover:shadow-lg hover:border-indigo-400 dark:hover:border-indigo-500 hover:-translate-y-1 flex flex-col h-full relative overflow-hidden">
+                    <div @click="openModal(key)" class="skill-card js-spotlight-card group cursor-pointer bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-indigo-500/10 hover:shadow-lg hover:border-indigo-400 dark:hover:border-indigo-500 hover:-translate-y-1 flex flex-col h-full relative overflow-hidden">
                         <div class="flex items-center gap-4 mb-5 relative z-10">
                             <div :class="`p-3 rounded-xl ${skill.bg} ${skill.color} transition-transform group-hover:scale-110`">
                                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -323,6 +324,9 @@
                     </div>
 
                     <div class="px-6 py-6">
+                        <div x-show="activeSkill?.image" class="mb-5 overflow-hidden rounded-xl h-32 md:h-40 bg-gray-100 dark:bg-gray-800">
+                            <img :src="activeSkill?.image" :alt="activeSkill?.title" class="w-full h-full object-cover opacity-90">
+                        </div>
                         <p class="text-gray-600 dark:text-gray-300 text-sm mb-6 bg-gray-50 dark:bg-gray-800/50 p-4 rounded-xl" x-html="activeSkill?.description"></p>
                         
                         <h4 class="text-xs font-bold tracking-wider uppercase text-gray-500 dark:text-gray-400 mb-4 flex items-center gap-2">
@@ -366,7 +370,12 @@
                     
                     <!-- Decoración -->
                     <div class="absolute bottom-0 right-0 p-4 opacity-5 pointer-events-none">
-                        <svg class="w-24 h-24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                        <svg class="w-24 h-24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <rect x="4" y="4" width="7" height="7" rx="2" />
+                            <rect x="13" y="13" width="7" height="7" rx="2" />
+                            <circle cx="17" cy="7" r="2" />
+                            <circle cx="7" cy="17" r="2" />
+                        </svg>
                     </div>
                 </div>
 
@@ -380,8 +389,10 @@
     |  ##########             PROJECTS SECTION             ##########  |                
     |------------------------------------------------------------------|
     -->
-    <section id="projects" class="py-24 bg-white dark:bg-gray-900 transition-colors duration-300">
-        <div class="max-w-screen-xl px-4 mx-auto">
+    <section id="projects" class="relative py-24 bg-white dark:bg-gray-900 transition-colors duration-300 overflow-hidden">
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-72 h-72 bg-indigo-500/10 dark:bg-indigo-500/18 rounded-full blur-3xl pointer-events-none hidden lg:block"></div>
+        <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-indigo-500/10 dark:bg-indigo-500/18 rounded-full blur-3xl pointer-events-none hidden md:block"></div>
+        <div class="max-w-screen-xl px-4 mx-auto relative z-10">
             <div class="mb-16">
                 <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">Proyectos</h2>
                 <div class="w-20 h-1.5 bg-indigo-600 mt-4 rounded-full"></div>
@@ -429,9 +440,28 @@
                         {{ session('status') }}
                     </div>
                 @else
-                    <p class="mt-5 text-lg text-gray-600 dark:text-gray-400 max-w-lg mx-auto">
-                        ¿Tienes una idea en mente? Cuéntame los detalles sin compromiso y me pondré en contacto contigo con propuestas.
+                    <p class="mt-5 text-lg text-gray-600 dark:text-gray-300 max-w-xl mx-auto">
+                        Puedes escribirme <span class="font-semibold">sin compromiso</span> para contarme tu idea de proyecto: ya sea un <span class="font-semibold">portfolio profesional</span>, un <span class="font-semibold">CRM</span>, un <span class="font-semibold">ERP</span> o una <span class="font-semibold">app móvil</span> a medida. 
+                        Cuéntame qué necesitas y te responderé con propuestas y próximos pasos claros.
                     </p>
+                    <div class="mt-5 flex flex-wrap justify-center gap-2 text-xs font-semibold">
+                        <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100 dark:bg-indigo-900/40 dark:text-indigo-200 dark:border-indigo-800/60 hover:scale-105 transition-transform">
+                            <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span>
+                            Portfolios
+                        </span>
+                        <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100 dark:bg-emerald-900/40 dark:text-emerald-200 dark:border-emerald-800/60 hover:scale-105 transition-transform">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                            CRMs
+                        </span>
+                        <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-100 dark:bg-amber-900/40 dark:text-amber-200 dark:border-amber-800/60 hover:scale-105 transition-transform">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                            ERPs
+                        </span>
+                        <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-sky-50 text-sky-700 border border-sky-100 dark:bg-sky-900/40 dark:text-sky-200 dark:border-sky-800/60 hover:scale-105 transition-transform">
+                            <span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
+                            Apps móviles
+                        </span>
+                    </div>
                 @endif
             </div>
 
@@ -600,6 +630,7 @@ document.addEventListener('alpine:init', () => {
         skillsData: {
             web: {
                 title: 'Desarrollo Web & Frameworks',
+                image: 'https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg?auto=compress&cs=tinysrgb&w=800',
                 icon: 'M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9',
                 color: 'text-indigo-600 dark:text-indigo-400',
                 bg: 'bg-indigo-50 dark:bg-indigo-900/30',
@@ -617,6 +648,7 @@ document.addEventListener('alpine:init', () => {
             },
             movil: {
                 title: 'Desarrollo Multiplataforma & Móvil',
+                image: 'https://www.addevice.io/storage/ckeditor/uploads/images/65f840d316353_mobile.app.development.1920.1080.png',
                 icon: 'M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z',
                 color: 'text-green-600 dark:text-green-400',
                 bg: 'bg-green-50 dark:bg-green-900/30',
@@ -631,6 +663,7 @@ document.addEventListener('alpine:init', () => {
             },
             ecommerce: {
                 title: 'E-commerce, ERPs & CMS',
+                image: 'https://images.pexels.com/photos/4968391/pexels-photo-4968391.jpeg?auto=compress&cs=tinysrgb&w=800',
                 icon: 'M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z',
                 color: 'text-pink-600 dark:text-pink-400',
                 bg: 'bg-pink-50 dark:bg-pink-900/30',
@@ -644,6 +677,7 @@ document.addEventListener('alpine:init', () => {
             },
             bbdd: {
                 title: 'Bases de Datos (SGBD)',
+                image: 'https://images.pexels.com/photos/669615/pexels-photo-669615.jpeg?auto=compress&cs=tinysrgb&w=800',
                 icon: 'M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4',
                 color: 'text-blue-600 dark:text-blue-400',
                 bg: 'bg-blue-50 dark:bg-blue-900/30',
@@ -659,6 +693,7 @@ document.addEventListener('alpine:init', () => {
             },
             infra: {
                 title: 'Infraestructura & DevOps',
+                image: 'https://images.pexels.com/photos/1181354/pexels-photo-1181354.jpeg?auto=compress&cs=tinysrgb&w=800',
                 icon: 'M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2',
                 color: 'text-orange-600 dark:text-orange-400',
                 bg: 'bg-orange-50 dark:bg-orange-900/30',
@@ -676,6 +711,7 @@ document.addEventListener('alpine:init', () => {
             },
             arquitectura: {
                 title: 'Arquitectura y Patrones',
+                image: 'https://miro.medium.com/v2/resize:fit:1200/1*RiuRKtGDcgBQgoI9-JE-kg.jpeg',
                 icon: 'M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
                 color: 'text-purple-600 dark:text-purple-400',
                 bg: 'bg-purple-50 dark:bg-purple-900/30',
