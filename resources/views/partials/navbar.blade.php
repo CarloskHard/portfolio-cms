@@ -15,14 +15,13 @@
         <!-- Logo -->
         <a href="{{ route('home') }}" class="flex items-center space-x-3 rtl:space-x-reverse group">
             <img src="{{ asset('img/logo.png') }}" class="h-10 w-10 rounded-full shadow-sm" alt="Logo">
-            <span class="self-center text-xl font-bold whitespace-nowrap text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Carlos Codes</span>
+            <span class="self-center text-xl font-bold whitespace-nowrap text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Carlos Codex</span>
         </a>
         
         <div class="flex items-center gap-4 md:order-2">
             <x-theme-toggle />
             
-            <!-- BOTÓN MÓVIL: Aquí está la magia -->
-            <!-- Quitamos las clases fijas de color y usamos :class para reaccionar a 'open' -->
+            <!-- BOTÓN MÓVIL -->
             <button @click="open = !open" type="button" 
                 class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden focus:outline-none transition-colors"
                 :class="{

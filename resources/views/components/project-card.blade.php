@@ -4,8 +4,8 @@
 <article class="group project-card js-project-card bg-gray-50 dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 flex flex-col h-full shadow-sm 
     hover:shadow-2xl hover:shadow-indigo-500/10 hover:-translate-y-2 hover:border-indigo-500/50 transition-all duration-300 relative">
     
-    {{-- Detalle moderno: Línea de acento superior que se expande --}}
-    <div class="absolute top-0 left-0 w-0 h-1 bg-indigo-600 group-hover:w-full transition-all duration-500 z-30"></div>
+    {{-- Detalle: Línea de acento superior que se expande --}}
+    <div class="absolute bottom-0 left-0 w-0 h-1 bg-indigo-600 group-hover:w-full transition-all duration-500 z-30"></div>
 
     @php
         $images = $project->images ?? [];
@@ -71,6 +71,6 @@
         </div>
     </div>
 
-    {{-- Efecto de resplandor sutil al fondo --}}
+    {{-- Efecto de resplandor sutil al fondo esquina inferior derecha --}}
     <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-indigo-500/5 rounded-full blur-3xl group-hover:bg-indigo-500/10 transition-colors duration-500"></div>
 </article>
