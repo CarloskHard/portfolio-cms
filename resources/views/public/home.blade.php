@@ -17,7 +17,7 @@
                     🚀 Disponible para nuevos proyectos
                 </span>
                 <h1 class="max-w-2xl mx-auto lg:mx-0 mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl text-gray-900 dark:text-white">
-                    Hola 👋🏼, soy <br> <span class="text-indigo-600 dark:text-indigo-400">Carlos Codes</span>
+                    Hola 👋🏼, soy <br> <span class="text-indigo-600 dark:text-indigo-400">Carlos Codex</span>
                 </h1>
                 <p class="max-w-2xl mx-auto lg:mx-0 mb-8 font-light text-gray-600 dark:text-gray-400 lg:mb-8 md:text-lg lg:text-xl leading-relaxed">
                     Desarrollador Full Stack web y móvil
@@ -415,50 +415,78 @@
     -->
     <section id="contact" class="py-20 bg-gray-50 dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700 transition-colors duration-300">
         <div class="max-w-screen-md mx-auto px-4">
+            
+            <!-- Cabecera de la sección -->
             <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-gray-900 dark:text-white">¿Trabajamos juntos?</h2>
-                <div class="w-32 h-1.5 bg-indigo-600 mt-4 rounded-full mx-auto"></div>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white tracking-tight">
+                    Hablemos de tu proyecto
+                </h2>
+                <div class="w-24 h-1.5 bg-gradient-to-r from-indigo-500 to-purple-500 mt-5 rounded-full mx-auto"></div>
                 
                 @if (session('status'))
-                    <div class="mt-4 p-4 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg border border-green-200 dark:border-green-800">
+                    <div class="mt-6 p-4 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 rounded-xl border border-green-200 dark:border-green-800/50 flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                         {{ session('status') }}
                     </div>
                 @else
-                    <p class="mt-4 text-gray-500 dark:text-gray-400">Envíame un mensaje y te responderé lo antes posible.</p>
+                    <p class="mt-5 text-lg text-gray-600 dark:text-gray-400 max-w-lg mx-auto">
+                        ¿Tienes una idea en mente? Cuéntame los detalles sin compromiso y me pondré en contacto contigo con propuestas.
+                    </p>
                 @endif
             </div>
 
-            <div class="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
-                <form id="contactForm" action="{{ route('contact.store') }}" method="POST" class="space-y-6">
+            <!-- Tarjeta del Formulario -->
+            <div class="bg-white dark:bg-gray-900 p-6 sm:p-10 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 relative overflow-hidden">
+                
+                <form id="contactForm" action="{{ route('contact.store') }}" method="POST" class="space-y-6 relative z-10">
                     @csrf
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nombre</label>
-                            <input type="text" name="name" value="{{ old('name') }}" required class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 transition-colors">
+                        <!-- Nombre -->
+                        <div class="space-y-1.5">
+                            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nombre completo</label>
+                            <input type="text" id="name" name="name" value="{{ old('name') }}" required 
+                                placeholder="Ej. Ana García"
+                                class="w-full rounded-xl border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-indigo-500 focus:ring-indigo-500 transition-colors">
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
-                            <input type="email" name="email" value="{{ old('email') }}" required class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 transition-colors">
+                        
+                        <!-- Email -->
+                        <div class="space-y-1.5">
+                            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Correo electrónico</label>
+                            <input type="email" id="email" name="email" value="{{ old('email') }}" required 
+                                placeholder="hola@gmail.com"
+                                class="w-full rounded-xl border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-indigo-500 focus:ring-indigo-500 transition-colors">
                         </div>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Mensaje</label>
-                        <textarea name="content" rows="4" required class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 transition-colors">{{ old('content') }}</textarea>
                     </div>
                     
-                    <div class="pt-4">
-                        <button type="submit" class="w-full px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition shadow-lg shadow-indigo-500/30">
-                            Enviar Mensaje
+                    <!-- Mensaje -->
+                    <div class="space-y-1.5">
+                        <label for="content" class="block text-sm font-medium text-gray-700 dark:text-gray-300">¿En qué puedo ayudarte?</label>
+                        <textarea id="content" name="content" rows="4" required 
+                            placeholder="Me gustaría hablar contigo sobre el desarrollo de..."
+                            class="w-full rounded-xl border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-indigo-500 focus:ring-indigo-500 transition-colors resize-none">{{ old('content') }}</textarea>
+                    </div>
+                    
+                    <!-- Botón Principal -->
+                    <div class="pt-2">
+                        <button type="submit" class="w-full sm:w-auto sm:min-w-[200px] flex justify-center items-center gap-2 px-8 py-3.5 bg-indigo-600 text-white font-medium rounded-xl hover:bg-indigo-700 active:scale-95 transition-all duration-200 shadow-md hover:shadow-lg shadow-indigo-500/20 ml-auto">
+                            <span>Enviar mensaje</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                         </button>
                     </div>
                 </form>
-                <div class="mt-5 text-center">
-                    <span class="text-sm text-gray-400 mb-3"> O si lo prefieres: </span>
-                    <a href="mailto:{{ env('APP_CONTACT_EMAIL') }}" class="inline-flex items-center gap-2 px-4 py-2 text-sm bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition opacity-80 hover:opacity-100">
-                        <svg class="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 24 24"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>
-                        Contactar por email
-                    </a>
+
+                <!-- Alternativa secundaria (Discreta) -->
+                <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-800/60 relative z-10 flex items-center justify-center">
+                    <p class="text-sm text-gray-500 dark:text-gray-500 flex flex-wrap items-center justify-center gap-1.5 text-center">
+                        <span>¿Prefieres usar el correo?</span> 
+                        <a href="mailto:{{ env('APP_CONTACT_EMAIL') }}" class="group inline-flex items-center gap-1.5 font-medium text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                            <!-- El icono y el texto ahora estarán alineados al centro exacto entre sí -->
+                            <x-icons.email class="w-5 h-5 transition-colors duration-300" />
+                            <span>Contáctame por email</span>
+                        </a>
+                    </p>
                 </div>
+
             </div>
         </div>
     </section>
