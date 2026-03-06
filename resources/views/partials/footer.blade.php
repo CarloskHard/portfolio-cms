@@ -6,12 +6,12 @@
                 &copy; {{ date('Y') }}
                 <span class="js-footer-name-spotlight footer-name-wrapper mx-1 inline-block cursor-default relative text-indigo-400 font-medium">
                     <span class="footer-name-vfx-base">
-                        @foreach(mb_str_split('Carlos Codes') as $i => $char)
+                        @foreach(mb_str_split('Carlos Codex') as $i => $char)
                         <span class="footer-name-char" style="--char-index: {{ $i }}">{{ $char }}</span>
                         @endforeach
                     </span>
                     <span class="footer-name-vfx-sweep" aria-hidden="true">
-                        @foreach(mb_str_split('Carlos Codes') as $i => $char)
+                        @foreach(mb_str_split('Carlos Codex') as $i => $char)
                         <span class="footer-name-char" style="--char-index: {{ $i }}">{{ $char }}</span>
                         @endforeach
                     </span>

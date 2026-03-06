@@ -54,9 +54,11 @@
                 <div class="relative w-56 h-56 sm:w-64 sm:h-64 lg:w-80 lg:h-80">
                     <div class="absolute top-0 right-0 w-48 h-48 sm:w-56 sm:h-56 lg:w-72 lg:h-72 bg-indigo-200 dark:bg-indigo-900 rounded-full blur-3xl opacity-40"></div>
                     
-                    <div class="relative w-full h-full rounded-full border-4 border-white dark:border-gray-800 shadow-xl overflow-hidden bg-gray-100 dark:bg-gray-800">
-                        <img src="{{ asset('img/me-light.png') }}" onerror="this.src='{{ asset('img/logo.png') }}'" alt="Carlos Codes" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-100 dark:opacity-0">
-                        <img src="{{ asset('img/me.png') }}" onerror="this.src='{{ asset('img/logo.png') }}'" alt="Carlos Codes" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0 dark:opacity-100">
+                    <div class="profile-ring relative w-full h-full rounded-full border-4 border-white dark:border-gray-800 shadow-xl bg-gray-100 dark:bg-gray-800">
+                        <div class="absolute inset-0 rounded-full overflow-hidden">
+                            <img src="{{ asset('img/me-light.png') }}" onerror="this.src='{{ asset('img/logo.png') }}'" alt="Carlos Codex" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-100 dark:opacity-0">
+                            <img src="{{ asset('img/me.png') }}" onerror="this.src='{{ asset('img/logo.png') }}'" alt="Carlos Codex" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0 dark:opacity-100">
+                        </div>
                     </div>
 
                     <div class="absolute bottom-2 left-0 sm:bottom-4 sm:left-0 bg-white dark:bg-gray-800 p-3 rounded-full shadow-lg border border-gray-100 dark:border-gray-700 text-indigo-600 dark:text-indigo-400 animate-floating">

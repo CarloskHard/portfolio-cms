@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Carlos Codes | Full Stack Developer</title>
+    <title>Carlos Codex | Full Stack Developer</title>
     <meta name="description" content="Desarrollo de aplicaciones y webs para particulares y empresas. +7 años desarrollando software. Cuéntame tu idea y te devolveré un producto real."> <!-- Snippet en búsqueda de Google -->
     <link rel="icon" href="{{ asset('img/logo.png') }}" type="image/png">
     
@@ -50,6 +50,62 @@
             100% { transform: translate(0, 0) rotate(0deg); } 
         }
         .animate-floating { animation: float-natural 8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite; }
+
+        /* Hero profile metallic sweep ring */
+        @keyframes profile-ring-sweep {
+            0% {
+                opacity: 0.24;
+                transform: rotate(0deg);
+                filter: blur(0px);
+            }
+            18% {
+                opacity: 0.2;
+            }
+            45% {
+                opacity: 0.12;
+            }
+            70% {
+                opacity: 0.07;
+            }
+            100% {
+                opacity: 0;
+                transform: rotate(360deg);
+                filter: blur(0.35px);
+            }
+        }
+        .profile-ring {
+            isolation: isolate;
+            transition: transform 620ms cubic-bezier(0.22, 0.8, 0.2, 1), box-shadow 680ms ease;
+        }
+        .profile-ring::before {
+            content: "";
+            position: absolute;
+            inset: -4px;
+            border-radius: 9999px;
+            background:
+                conic-gradient(
+                    from 0deg,
+                    rgba(255, 255, 255, 0) 0deg 300deg,
+                    rgba(224, 231, 255, 0.72) 326deg,
+                    rgba(129, 140, 248, 0.58) 346deg,
+                    rgba(255, 255, 255, 0) 360deg
+                );
+            opacity: 0;
+            pointer-events: none;
+            z-index: 2;
+            transition: opacity 680ms cubic-bezier(0.22, 0.8, 0.2, 1);
+            /* mask only the ring area */
+            -webkit-mask:
+                radial-gradient(farthest-side, transparent calc(100% - 6px), #000 calc(100% - 4px));
+            mask: radial-gradient(farthest-side, transparent calc(100% - 6px), #000 calc(100% - 4px));
+        }
+        .profile-ring:hover::before {
+            animation: profile-ring-sweep 1.15s cubic-bezier(0.22, 0.8, 0.2, 1) 1 both;
+        }
+        .profile-ring:hover {
+            transform: scale(1.004);
+            box-shadow: 0 14px 30px rgba(99, 102, 241, 0.12);
+        }
 
         /* GitHub Icon Animation (sutil pero notable) */
         .hover-wiggle {
