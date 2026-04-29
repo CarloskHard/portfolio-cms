@@ -3,6 +3,7 @@
     $currentRoute = Route::currentRouteName();
     
     $isHome = $currentRoute === 'home';
+    $logoHref = auth()->check() ? route('dashboard') : route('home');
     // Ajusta estos arrays con los nombres reales de tus rutas
     $isAboutPage = in_array($currentRoute, ['public.about', 'about']); 
     $isProjectsPage = in_array($currentRoute, ['public.projects', 'projects', 'projects.index']); 
@@ -12,8 +13,10 @@
 <nav x-data="{ open: false }" @click.outside="open = false" class="fixed w-full z-50 top-0 start-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 transition-colors duration-300">
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         
-        <!-- Logo -->
-        <a href="{{ route('home') }}" class="flex items-center space-x-3 rtl:space-x-reverse group">
+        <!-- Logo: dashboard si hay sesión; en público, inicio (recarga si ya estás en inicio) -->
+        <a href="{{ $logoHref }}"
+           @guest @if($isHome) onclick="event.preventDefault(); window.location.reload();" @endif @endguest
+           class="flex items-center space-x-3 rtl:space-x-reverse group">
             <img src="{{ asset('img/logo.png') }}" class="h-10 w-10 rounded-full shadow-sm" alt="Logo">
             <span class="js-footer-design-spotlight footer-design-wrapper navbar-brand-vfx self-center text-xl font-bold whitespace-nowrap text-gray-900 dark:text-indigo-400 inline-block cursor-default relative">
                 <span class="navbar-brand-stack">
