@@ -1,4 +1,4 @@
-<button id="theme-toggle" type="button" class="relative inline-flex items-center justify-center p-2 rounded-lg text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700 transition-all duration-300 w-10 h-10 overflow-hidden shadow-sm">
+<button id="theme-toggle" type="button" class="relative inline-flex items-center justify-center p-2 rounded-lg text-gray-500 dark:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700 transition-all duration-300 w-10 h-10 overflow-hidden hover:opacity-80">
     
     <!-- ICONO LUNA (Visible en Light -> Color Indigo) -->
     <svg id="theme-toggle-dark-icon" class="w-5 h-5 transition-all duration-500 transform absolute

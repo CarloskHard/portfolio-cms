@@ -112,6 +112,34 @@
     );
 }
 
+/* Footer: borde más legible + mismo spotlight que las tarjetas (solo el anillo; inset 0 para no recortar con overflow-hidden) */
+.site-footer.js-footer-border-spotlight {
+    position: relative;
+}
+
+.site-footer.js-footer-border-spotlight::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    z-index: 0;
+    background: radial-gradient(
+        240px circle at var(--mouse-x, 50%) var(--mouse-y, 0%),
+        rgb(112, 126, 251) 0%,
+        rgba(115, 128, 252, 0.5) 50%,
+        transparent 100%
+    );
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: var(--footer-spotlight-opacity, 0);
+    transition: opacity 0.3s ease;
+}
+
 /* IMPORTANTE: Hemos eliminado el "border-color: transparent" */
 /* Ahora el borde original de la card se queda visible siempre */
 

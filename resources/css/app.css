@@ -30,7 +30,7 @@
     }
 
     html:has(body.about-ai-dots-page) {
-        background-color: rgb(245, 245, 240);
+        background-color: #f9fafb;
     }
 
     html.dark:has(body.about-ai-dots-page) {
@@ -40,10 +40,38 @@
 
 /* Sobre mí (/sobre-mi): fondo alineado con el canvas de puntos del componente x-ai-dots-background */
 body.about-ai-dots-page {
-    background-color: rgb(245, 245, 240) !important;
+    background-color: #f9fafb !important;
 }
 html.dark body.about-ai-dots-page {
     background-color: #111827 !important;
+}
+
+/*
+ * Sobre mí: colores del canvas de puntos (claro / oscuro).
+ * El script lee --ai-dots-dot en cada frame para que el toggle de tema actualice los puntos.
+ */
+body.about-ai-dots-page .ai-dots-bg-stack {
+    --ai-dots-canvas-bg: #f9fafb;
+    --ai-dots-mask-bg: #f9fafb;
+    --ai-dots-dot: 79, 70, 229;
+}
+
+html.dark body.about-ai-dots-page .ai-dots-bg-stack {
+    --ai-dots-canvas-bg: #111827;
+    --ai-dots-mask-bg: #111827;
+    --ai-dots-dot: 165, 180, 252;
+    /* Ribbons + cursor glow: valores claros + lighten quedaban blancos sobre fondo oscuro */
+    --ai-dots-wave-wide: #334155;
+    --ai-dots-wave-mid: #1e293b;
+    --ai-dots-wave-core: #020617;
+    --ai-dots-mask-blend: soft-light;
+    --ai-dots-glow-blend: soft-light;
+    --ai-dots-glow-gradient: radial-gradient(
+        circle at 50% 50%,
+        rgba(51, 65, 85, 0.55) 0%,
+        rgba(30, 41, 59, 0.22) 45%,
+        transparent 72%
+    );
 }
 
 /* Público: sustituye min-h-screen (100vh) para seguir la barra de direcciones al ocultarse */

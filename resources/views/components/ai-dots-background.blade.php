@@ -1,17 +1,48 @@
 @props([
     'variant' => 'viewport',
     'interactive' => true,
+    /*
+     * Optional theme overrides (defaults match original /cv look).
+     * backgroundColor: any CSS color (e.g. #f9fafb, rgb(...))
+     * dotColor: comma-separated R,G,B for canvas dots (e.g. 99, 102, 241)
+     */
+    'backgroundColor' => null,
+    'dotColor' => null,
 ])
 
 @php
     $stackClass = $variant === 'section'
         ? 'ai-dots-bg-stack ai-dots-bg-stack--section'
         : 'ai-dots-bg-stack ai-dots-bg-stack--viewport';
+
+    $styleParts = [];
+    if ($backgroundColor !== null && $backgroundColor !== '') {
+        $bg = e($backgroundColor);
+        $styleParts[] = '--ai-dots-canvas-bg: ' . $bg;
+        $styleParts[] = '--ai-dots-mask-bg: ' . $bg;
+    }
+    if ($dotColor !== null && $dotColor !== '') {
+        $styleParts[] = '--ai-dots-dot: ' . e($dotColor);
+    }
+    $inlineStyle = count($styleParts) ? implode('; ', $styleParts) : null;
 @endphp
 
 @once
     <style>
-        .ai-dots-bg-stack { pointer-events: none; }
+        .ai-dots-bg-stack {
+            pointer-events: none;
+            --ai-dots-canvas-bg: rgb(245, 245, 240);
+            --ai-dots-mask-bg: rgb(245, 245, 240);
+            /* R,G,B — used as rgb(var(--ai-dots-dot)) in script */
+            --ai-dots-dot: 232, 118, 74;
+            /* Blurred wave ribbons (SVG strokes, wide → narrow) */
+            --ai-dots-wave-wide: #d8d8d2;
+            --ai-dots-wave-mid: #77776f;
+            --ai-dots-wave-core: #000000;
+            --ai-dots-mask-blend: lighten;
+            --ai-dots-glow-blend: multiply;
+            --ai-dots-glow-gradient: radial-gradient(circle at 50% 50%, #9a9a92 0%, #d8d8d4 52%, transparent 84%);
+        }
         .ai-dots-bg-stack--viewport {
             position: fixed;
             left: 0;
@@ -36,7 +67,7 @@
             display: block;
             width: 100%;
             height: 100%;
-            background-color: rgb(245, 245, 240);
+            background-color: var(--ai-dots-canvas-bg);
         }
         .ai-dots-bg-stack--viewport .js-ai-dots-canvas {
             position: absolute;
@@ -47,8 +78,8 @@
             inset: 0;
             width: 100%;
             height: 100%;
-            background-color: rgb(245, 245, 240);
-            mix-blend-mode: lighten;
+            background-color: var(--ai-dots-mask-bg);
+            mix-blend-mode: var(--ai-dots-mask-blend);
             z-index: 1;
             overflow: hidden;
         }
@@ -110,10 +141,10 @@
             position: absolute;
             width: 680px;
             height: 680px;
-            background: radial-gradient(circle at 50% 50%, #9a9a92 0%, #d8d8d4 52%, transparent 84%);
+            background: var(--ai-dots-glow-gradient);
             border-radius: 50%;
             transform: translate(-50%, -50%);
-            mix-blend-mode: multiply;
+            mix-blend-mode: var(--ai-dots-glow-blend);
             filter: blur(40px);
             z-index: 2;
         }
@@ -128,24 +159,24 @@
 @endonce
 
 @if($interactive)
-<div {{ $attributes->merge(['class' => $stackClass]) }} data-ai-dots-root="{{ $variant }}" aria-hidden="true">
+<div {{ $attributes->merge(['class' => $stackClass]) }} @if($inlineStyle) style="{{ $inlineStyle }}" @endif data-ai-dots-root="{{ $variant }}" aria-hidden="true">
     <canvas class="js-ai-dots-canvas"></canvas>
     <div class="ai-dots-mask-layer">
         <div class="ai-dots-wave-container">
             <svg class="ai-dots-wave-path ai-dots-wave-1" viewBox="0 0 1000 400" preserveAspectRatio="none">
-                <path d="M -200,200 C 100,50 300,350 600,200 C 900,50 1100,350 1400,200" fill="none" stroke="#d8d8d2" stroke-width="128" stroke-linecap="round"/>
-                <path d="M -200,200 C 100,50 300,350 600,200 C 900,50 1100,350 1400,200" fill="none" stroke="#77776f" stroke-width="86" stroke-linecap="round"/>
-                <path d="M -200,200 C 100,50 300,350 600,200 C 900,50 1100,350 1400,200" fill="none" stroke="black" stroke-width="46" stroke-linecap="round"/>
+                <path d="M -200,200 C 100,50 300,350 600,200 C 900,50 1100,350 1400,200" fill="none" stroke="var(--ai-dots-wave-wide)" stroke-width="128" stroke-linecap="round"/>
+                <path d="M -200,200 C 100,50 300,350 600,200 C 900,50 1100,350 1400,200" fill="none" stroke="var(--ai-dots-wave-mid)" stroke-width="86" stroke-linecap="round"/>
+                <path d="M -200,200 C 100,50 300,350 600,200 C 900,50 1100,350 1400,200" fill="none" stroke="var(--ai-dots-wave-core)" stroke-width="46" stroke-linecap="round"/>
             </svg>
             <svg class="ai-dots-wave-path ai-dots-wave-2" viewBox="0 0 1000 400" preserveAspectRatio="none">
-                <path d="M -200,200 C 200,350 400,50 700,200 C 1000,350 1200,50 1400,200" fill="none" stroke="#d8d8d2" stroke-width="102" stroke-linecap="round"/>
-                <path d="M -200,200 C 200,350 400,50 700,200 C 1000,350 1200,50 1400,200" fill="none" stroke="#77776f" stroke-width="68" stroke-linecap="round"/>
-                <path d="M -200,200 C 200,350 400,50 700,200 C 1000,350 1200,50 1400,200" fill="none" stroke="black" stroke-width="38" stroke-linecap="round"/>
+                <path d="M -200,200 C 200,350 400,50 700,200 C 1000,350 1200,50 1400,200" fill="none" stroke="var(--ai-dots-wave-wide)" stroke-width="102" stroke-linecap="round"/>
+                <path d="M -200,200 C 200,350 400,50 700,200 C 1000,350 1200,50 1400,200" fill="none" stroke="var(--ai-dots-wave-mid)" stroke-width="68" stroke-linecap="round"/>
+                <path d="M -200,200 C 200,350 400,50 700,200 C 1000,350 1200,50 1400,200" fill="none" stroke="var(--ai-dots-wave-core)" stroke-width="38" stroke-linecap="round"/>
             </svg>
             <svg class="ai-dots-wave-path ai-dots-wave-3" viewBox="0 0 1000 400" preserveAspectRatio="none">
-                <path d="M -200,180 C 80,310 280,90 540,210 C 800,330 980,80 1400,180" fill="none" stroke="#d8d8d2" stroke-width="112" stroke-linecap="round"/>
-                <path d="M -200,180 C 80,310 280,90 540,210 C 800,330 980,80 1400,180" fill="none" stroke="#77776f" stroke-width="74" stroke-linecap="round"/>
-                <path d="M -200,180 C 80,310 280,90 540,210 C 800,330 980,80 1400,180" fill="none" stroke="black" stroke-width="40" stroke-linecap="round"/>
+                <path d="M -200,180 C 80,310 280,90 540,210 C 800,330 980,80 1400,180" fill="none" stroke="var(--ai-dots-wave-wide)" stroke-width="112" stroke-linecap="round"/>
+                <path d="M -200,180 C 80,310 280,90 540,210 C 800,330 980,80 1400,180" fill="none" stroke="var(--ai-dots-wave-mid)" stroke-width="74" stroke-linecap="round"/>
+                <path d="M -200,180 C 80,310 280,90 540,210 C 800,330 980,80 1400,180" fill="none" stroke="var(--ai-dots-wave-core)" stroke-width="40" stroke-linecap="round"/>
             </svg>
         </div>
         <div class="js-ai-dots-glow ai-dots-glow"></div>
@@ -345,7 +376,7 @@
                 var mdx = mouse.x - gx;
                 var mdy = mouse.y - gy;
                 var local = Math.exp(-(mdx * mdx + mdy * mdy) / (300 * 300));
-                v += local * 0.4;
+                v += local * 0.82;
             }
             if (v > 1) v = 1;
             else if (v < 0) v = 0;
@@ -379,7 +410,7 @@
             this.x += (this.baseX - this.x) * 0.007;
             this.y += (this.baseY - this.y) * 0.007;
         };
-        Dot.prototype.draw = function (now) {
+        Dot.prototype.draw = function (now, dotRgbTriplet) {
             var v = visibilityForDot(this.baseX, this.baseY, canvas.width, canvas.height, now);
             var rMin = 0.55;
             var rMax = 1.62;
@@ -387,7 +418,7 @@
             var aMin = 0.16;
             var aMax = 1;
             ctx.globalAlpha = aMin + (aMax - aMin) * v;
-            ctx.fillStyle = 'rgb(232, 118, 74)';
+            ctx.fillStyle = 'rgb(' + dotRgbTriplet + ')';
             ctx.beginPath();
             ctx.arc(this.x, this.y, r, 0, Math.PI * 2);
             ctx.fill();
@@ -413,6 +444,7 @@
 
         function animate() {
             var now = performance.now();
+            var dotRgbTriplet = getComputedStyle(root).getPropertyValue('--ai-dots-dot').trim() || '232, 118, 74';
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             var ds = Math.sqrt(Math.pow(mouse.x - mouse.px, 2) + Math.pow(mouse.y - mouse.py, 2));
             if (ds > 72) ds = 72;
@@ -421,7 +453,7 @@
             mouse.py = mouse.y;
             for (var i = 0; i < dots.length; i++) {
                 dots[i].update();
-                dots[i].draw(now);
+                dots[i].draw(now, dotRgbTriplet);
             }
             requestAnimationFrame(animate);
         }

@@ -536,7 +536,6 @@
                             <span class="hero-dot-pulse"></span>Disponible · Q2 2026
                         </div>
                         <div>Sevilla · UTC+1</div>
-                        <div>Laravel · React · PostgreSQL</div>
                     </div>
 
                 </div>{{-- /hero-sub-grid --}}

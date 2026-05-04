@@ -201,8 +201,8 @@
       }
 
       /*
-        WebKit/Blink: scrollbar “slides” from the right by animating the scrollbar slot width (0 ↔ 14px).
-        Collapse keeps overflow-y:auto until the width finishes animating so the bar can retract smoothly.
+        WebKit/Blink: scrollbar “slides” from the right on expand via animating the slot width (0 ↔ 14px).
+        Collapse is immediate too: no delay before shrinking (matches expand responsiveness).
       */
       html.cv-expanded::-webkit-scrollbar {
         width: 14px;
@@ -1345,8 +1345,6 @@ rgb(235, 230, 221) 100%
 
   var root = document.documentElement;
   var labelEl = btn.querySelector('.cv-expand-label');
-  var collapseTimer = null;
-  var SB_SLIDE_MS = 420;
   var mqDesk = window.matchMedia('(min-width: 721px)');
 
   function motionOk() {
@@ -1376,11 +1374,6 @@ rgb(235, 230, 221) 100%
   }
 
   function setExpanded(enabled) {
-    if (collapseTimer) {
-      clearTimeout(collapseTimer);
-      collapseTimer = null;
-    }
-
     if (!scrollbarSlideOk()) {
       root.classList.remove('cv-scrollbar-slim');
       root.classList.toggle('cv-expanded', enabled);
@@ -1388,35 +1381,16 @@ rgb(235, 230, 221) 100%
       return;
     }
 
+    root.classList.remove('cv-scrollbar-slim');
+    root.classList.toggle('cv-expanded', enabled);
+    applyExpandUi(enabled);
+
     if (enabled) {
-      root.classList.add('cv-expanded');
-      applyExpandUi(true);
       scheduleScrollbarSlideIn();
-      return;
     }
-
-    if (!root.classList.contains('cv-expanded')) {
-      root.classList.remove('cv-scrollbar-slim');
-      applyExpandUi(false);
-      return;
-    }
-
-    root.classList.add('cv-scrollbar-slim');
-    applyExpandUi(false);
-    collapseTimer = setTimeout(function () {
-      root.classList.remove('cv-expanded', 'cv-scrollbar-slim');
-      collapseTimer = null;
-    }, SB_SLIDE_MS);
   }
 
   btn.addEventListener('click', function () {
-    if (collapseTimer) {
-      clearTimeout(collapseTimer);
-      collapseTimer = null;
-      root.classList.remove('cv-scrollbar-slim');
-      applyExpandUi(true);
-      return;
-    }
     var isExpanded = root.classList.contains('cv-expanded');
     setExpanded(!isExpanded);
   });

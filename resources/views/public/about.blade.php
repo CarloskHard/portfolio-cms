@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="relative min-h-dynamic overflow-x-hidden bg-transparent dark:bg-transparent">
-    <x-ai-dots-background variant="viewport" class="dark:hidden" />
+    <x-ai-dots-background variant="viewport" />
     <!-- CONTENEDOR PRINCIPAL -->
     <div class="relative z-10 max-w-4xl mx-auto px-6 lg:px-8 pt-28 pb-12 lg:pt-32 lg:pb-20">
 
