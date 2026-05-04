@@ -102,11 +102,19 @@
         <!-- Flex container: Logo | Nav links + Theme + CTA -->
         <div class="flex items-center justify-between">
 
-            <!-- LOGO - Izquierda -->
+            {{-- Logo: ola magnética (base) + brillo metálico del footer (capa absoluta); colores vía .navbar-logo-char-* + html.dark --}}
+            @php
+                $navLogo = 'CARLOS.CODEX';
+            @endphp
             <a href="{{ route('home') }}"
-               class="shrink-0 hover:opacity-70 transition-opacity duration-200"
+               class="shrink-0 inline-flex items-center"
                style="font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace; font-weight: 700; font-size: 19px; letter-spacing: 0.04em; text-decoration: none;">
-                <span class="text-gray-900 dark:text-gray-50">CARLOS</span><span class="text-gray-400 dark:text-gray-600">.CODEX</span>
+                <span class="js-footer-design-spotlight footer-design-wrapper navbar-brand-vfx relative inline-block whitespace-nowrap leading-none">
+                    <span class="js-footer-name-spotlight js-hero-wave hero-name-vfx footer-name-wrapper footer-magnetic-vfx navbar-logo-wave relative inline-block leading-none">
+                        <span class="footer-name-vfx-base">@foreach (mb_str_split($navLogo) as $i => $char)<span class="footer-name-char hero-wave-char {{ $i < 6 ? 'navbar-logo-char-main' : 'navbar-logo-char-muted' }}" style="--char-index: {{ $i }}">{{ $char }}</span>@endforeach</span>
+                        <span class="footer-design-reflection navbar-brand-metallic-overlay" aria-hidden="true">@foreach (mb_str_split($navLogo) as $i => $char)<span class="footer-name-char hero-wave-char navbar-brand-metallic-char" style="--char-index: {{ $i }}">{{ $char }}</span>@endforeach</span>
+                    </span>
+                </span>
             </a>
 
             <!-- MENÚ DERECHA (desktop) + Controles -->

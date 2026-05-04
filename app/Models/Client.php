@@ -20,7 +20,9 @@ class Client extends Model
     // Un cliente puede estar asociado a varios proyectos
     public function projects()
     {
-        return $this->belongsToMany(Project::class, 'project_client');
+        return $this->belongsToMany(Project::class, 'project_client')
+            ->orderBy('projects.sort_order')
+            ->orderBy('projects.id');
     }
 
     // Relación: Un cliente tiene muchos mensajes a través de sus contactos

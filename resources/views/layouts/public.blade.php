@@ -451,6 +451,45 @@
                     transparent              62%
                 );
         }
+
+        /* Logo nav: colores fijos claro/oscuro (no depender solo de utilidades Tailwind en el partial) */
+        .navbar-brand-vfx .navbar-logo-char-main {
+            color: #111827;
+        }
+        .navbar-brand-vfx .navbar-logo-char-muted {
+            color: #9ca3af;
+        }
+        .dark .navbar-brand-vfx .navbar-logo-char-main {
+            color: #f9fafb;
+        }
+        .dark .navbar-brand-vfx .navbar-logo-char-muted {
+            color: #4b5563;
+        }
+        /* Relieve del texto base (antes en .footer-design-base del mismo bloque navbar-brand-vfx) */
+        .navbar-brand-vfx .navbar-logo-wave .footer-name-vfx-base {
+            text-shadow:
+                0          1px   0 rgba(255, 255, 255, 0.38),
+                0         -1px   0 rgba(15, 23, 42, 0.06),
+                0.5px  0.75px   0 rgba(15, 23, 42, 0.1);
+        }
+        .dark .navbar-brand-vfx .navbar-logo-wave .footer-name-vfx-base {
+            text-shadow:
+                0    1px   0 rgba(255, 255, 255, 0.06),
+                0    2px   4px rgba(0, 0, 0, 0.55),
+                0   -1px   0 rgba(0, 0, 0, 0.35);
+        }
+        /* Capa metálica encima: mismos glifos que la ola (hero-wave-char) para alinear el brillo */
+        .navbar-brand-vfx .navbar-brand-metallic-overlay {
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .navbar-brand-vfx .navbar-brand-metallic-char {
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+        }
     </style>
 
     <script>

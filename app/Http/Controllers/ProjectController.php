@@ -6,13 +6,16 @@ use App\Models\Project;
 use App\Models\Technology;
 use App\Models\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Project::with(['technologies', 'clients'])->latest();
+        $query = Project::with(['technologies', 'clients'])
+            ->orderBy('sort_order')
+            ->orderBy('id');
 
         if ($request->filled('visibility')) {
             $query->where('visibility', $request->visibility);
@@ -24,10 +27,28 @@ class ProjectController extends Controller
             });
         }
 
-        $projects = $query->paginate(10)->withQueryString();
+        $projects = $query->get();
         $clients = Client::orderBy('commercial_name')->get();
 
-        return view('admin.projects.index', compact('projects', 'clients'));
+        $canReorder = ! $request->filled('visibility') && ! $request->filled('client_id');
+
+        return view('admin.projects.index', compact('projects', 'clients', 'canReorder'));
+    }
+
+    public function reorder(Request $request)
+    {
+        $validated = $request->validate([
+            'project_ids' => 'required|array',
+            'project_ids.*' => 'integer|exists:projects,id',
+        ]);
+
+        DB::transaction(function () use ($validated) {
+            foreach ($validated['project_ids'] as $index => $id) {
+                Project::whereKey($id)->update(['sort_order' => $index]);
+            }
+        });
+
+        return response()->json(['ok' => true]);
     }
 
     public function create()
@@ -135,6 +156,9 @@ class ProjectController extends Controller
         }
         
         $data['images'] = $finalImages;
+
+        $nextOrder = ((int) Project::max('sort_order')) + 1;
+        $data['sort_order'] = $nextOrder;
 
         // Crear Proyecto
         $project = Project::create($data);

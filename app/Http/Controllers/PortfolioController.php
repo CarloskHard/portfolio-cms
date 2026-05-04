@@ -14,8 +14,9 @@ class PortfolioController extends Controller
             /* Usamos 'with' (Eager Loading) para traer las tecnologías de golpe
                y ahorrar consultas a la base de datos (mejor rendimiento).    */
         $projects = Project::with('technologies')
-                    ->where('visibility', 'public') // Solo los públicos
-                    ->latest() // Ordenados por el más nuevo
+                    ->where('visibility', 'public')
+                    ->orderBy('sort_order')
+                    ->orderBy('id')
                     ->get();
 
         // Traemos todas las tecnologías para la sección de skills
@@ -31,7 +32,8 @@ class PortfolioController extends Controller
         // Aquí traemos todos, pero paginados de 9 en 9 para que cargue rápido
         $projects = Project::with('technologies')
                     ->where('visibility', 'public')
-                    ->latest()
+                    ->orderBy('sort_order')
+                    ->orderBy('id')
                     ->paginate(9); 
 
         return view('public.projects', compact('projects'));

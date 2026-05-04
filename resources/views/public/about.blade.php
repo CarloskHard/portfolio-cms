@@ -162,29 +162,29 @@
             
             <div class="grid gap-6 md:grid-cols-2">
                 <!-- Grado Superior DAW -->
-                <div class="js-spotlight-card group !bg-white dark:!bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-start gap-4 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
-                    <div class="text-3xl">🖥️</div>
+                <div class="js-spotlight-card group !bg-gray-50 dark:!bg-gray-800/50 p-6 rounded-2xl border border-gray-100 dark:border-gray-700 flex items-start gap-4 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+                    <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center text-2xl shrink-0">🖥️</div>
                     <div>
                         <h3 class="font-bold text-gray-900 dark:text-white">Desarrollo de Aplicaciones Web (DAW)</h3>
-                        <p class="text-sm text-gray-500 mt-1">Sep 2025 - Ene 2026</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Sep 2025 - Ene 2026</p>
                     </div>
                 </div>
 
                 <!-- Grado Superior DAM -->
-                <div class="js-spotlight-card group !bg-white dark:!bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-start gap-4 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
-                    <div class="text-3xl">📱</div>
+                <div class="js-spotlight-card group !bg-gray-50 dark:!bg-gray-800/50 p-6 rounded-2xl border border-gray-100 dark:border-gray-700 flex items-start gap-4 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+                    <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center text-2xl shrink-0">📱</div>
                     <div>
                         <h3 class="font-bold text-gray-900 dark:text-white">Desarrollo de Aplicaciones Multiplataforma (DAM)</h3>
-                        <p class="text-sm text-gray-500 mt-1">Ago 2021 - Jun 2023</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Ago 2021 - Jun 2023</p>
                     </div>
                 </div>
 
                 <!-- Mantenimiento -->
-                <div class="js-spotlight-card group !bg-white dark:!bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-start gap-4 md:col-span-2 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
-                    <div class="text-3xl">⚡</div>
+                <div class="js-spotlight-card group !bg-gray-50 dark:!bg-gray-800/50 p-6 rounded-2xl border border-gray-100 dark:border-gray-700 flex items-start gap-4 md:col-span-2 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+                    <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-2xl shrink-0">⚡</div>
                     <div>
                         <h3 class="font-bold text-gray-900 dark:text-white">Mantenimiento Electrónico</h3>
-                        <p class="text-sm text-gray-500 mt-1">Formación técnica previa</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Formación técnica previa</p>
                     </div>
                 </div>
             </div>

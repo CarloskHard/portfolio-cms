@@ -52,6 +52,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
 
+    Route::patch('projects/reorder', [ProjectController::class, 'reorder'])->name('projects.reorder');
+
     // Esto crea automáticamente las rutas: projects.index, projects.create, projects.store...
     Route::resource('projects', ProjectController::class);
 
