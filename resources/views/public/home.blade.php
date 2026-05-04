@@ -2,71 +2,562 @@
 
 @section('content')
 
+    {{-- ┌──────────────────────────────────────────────────────────────┐
+         │  WebGL fluid canvas — fixed full-page background             │
+         │  Always renders exactly the visible viewport (100vw×100vh),  │
+         │  never more. Sections scroll over it; the pattern appears    │
+         │  seamlessly continuous across the entire page.               │
+         └──────────────────────────────────────────────────────────────┘ --}}
+    <canvas id="hero-fluid-canvas"
+            style="position:fixed;inset:0;width:100%;height:100%;display:block;z-index:-1;pointer-events:none;"
+            aria-hidden="true"></canvas>
+
     <!--
     |------------------------------------------------------------------|
-    |  ##########               HERO SECTION               ##########  |                
+    |  ##########               HERO SECTION               ##########  |
+    |  Theme: HeroSoft — fluid WebGL background, Geist editorial type  |
     |------------------------------------------------------------------|
     -->
-    <section id="home" class="relative pt-32 pb-20 bg-white dark:bg-gray-900 overflow-hidden transition-colors duration-300">
-        <canvas id="code-canvas" class="absolute top-0 left-0 w-full h-full pointer-events-none opacity-[1] dark:opacity-[1]"></canvas>
+    <style>
+        /* ── Hero Soft design system ── */
+        /* Full-page shader background: body must be transparent */
+        body { background: transparent !important; }
 
-        <div class="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12 items-center">
-            
-            <div class="w-full text-center lg:text-left place-self-center lg:col-span-7 z-10 order-2 lg:order-1">
-                <span class="inline-block py-1 px-3 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 text-sm font-semibold mb-4 animate-subtle-breath border border-indigo-200 dark:border-indigo-800/50">
-                    🚀 Disponible para nuevos proyectos
-                </span>
-                <h1 class="max-w-2xl mx-auto lg:mx-0 mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl text-gray-900 dark:text-white">
-                    Hola 👋🏼, soy <br>
-                    <span class="js-footer-name-spotlight js-hero-wave footer-name-wrapper hero-name-vfx inline-block cursor-default relative text-indigo-600 dark:text-indigo-400 font-extrabold">
-                        <span class="footer-name-vfx-base">
-                            @foreach(mb_str_split('Carlos Codex') as $i => $char)<span class="footer-name-char hero-wave-char" style="--char-index: {{ $i }}">{!! $char === ' ' ? '&nbsp;' : e($char) !!}</span>@endforeach
-                        </span>
-                        <span class="footer-name-vfx-sweep" aria-hidden="true">
-                            @foreach(mb_str_split('Carlos Codex') as $i => $char)<span class="footer-name-char hero-wave-char" style="--char-index: {{ $i }}">{!! $char === ' ' ? '&nbsp;' : e($char) !!}</span>@endforeach
-                        </span>
-                    </span>
-                </h1>
-                <p class="max-w-2xl mx-auto lg:mx-0 mb-8 font-light text-gray-600 dark:text-gray-400 lg:mb-8 md:text-lg lg:text-xl leading-relaxed">
-                    Desarrollador Full Stack web y móvil
-                </p>
-                
-                <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4">
-                    <a href="#projects" class="inline-flex items-center justify-center px-5 py-3 proyecto-button-hero text-base font-medium text-center text-white rounded-lg bg-gray-900 hover:bg-gray-800 dark:bg-indigo-600 dark:hover:bg-indigo-700 transition">
-                        Ver Proyectos
-                    </a>
-                    <a href="#contact" class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 dark:text-white dark:border-gray-600 dark:hover:bg-gray-800 transition">
-                        Contactar
-                    </a>
-                    
-                    <div class="w-full sm:w-auto h-0 sm:h-8 border-t sm:border-l border-gray-300 dark:border-gray-700 mx-0 sm:mx-2"></div>
+        .hero-soft-section {
+            /* ~82svh: alto hero con un poco de la siguiente sección visible al cargar */
+            min-height: 82svh;
+            background: transparent;
+            position: relative;
+            overflow-x: clip;   /* evita scrollbar horizontal */
+            overflow-y: visible; /* permite que la imagen se asoma por abajo */
+        }
+        .dark .hero-soft-section {
+            background: transparent;
+        }
+        /* Primera palabra del titular — acento de marca (también: text-brand-mint / var(--color-brand-mint)) */
+        .hero-title-accent {
+            color: var(--color-brand-mint);
+        }
+        /* Una línea del H1 editorial: hueco entre cajas resaltadas arriba/abajo */
+        .hero-headline-line {
+            display: block;
+        }
+        .hero-headline-line:not(:last-child) {
+            margin-bottom: clamp(0.12em, 2.2vmin, 0.34em);
+        }
+        /* Highlight blocks: mismo material que tarjetas #services (mate + grano SVG) */
+        .hero-hl {
+            display: inline-block;
+            background-color: rgba(236, 240, 248, 0.93);
+            background-image: var(--section-matte-grain);
+            background-size: 144px 144px;
+            background-blend-mode: overlay;
+            color: #0f172a;
+            border: 2px solid rgba(100, 116, 139, 0.24);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.82),
+                inset 0 -1px 0 rgba(71, 85, 105, 0.06),
+                0 1px 2px rgba(51, 65, 85, 0.05),
+                0 6px 18px rgba(51, 65, 85, 0.07);
+            padding: 0 0.1em 0.02em;
+            border-radius: 10px;
+            margin: 0 0.03em;
+            line-height: 0.92;
+            vertical-align: baseline;
+        }
+        .dark .hero-hl {
+            background-color: rgba(44, 47, 54, 0.9);
+            background-image: var(--section-matte-grain);
+            background-blend-mode: soft-light;
+            color: #f1f5f9;
+            border: 2px solid rgba(148, 163, 184, 0.2);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.07),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.38),
+                0 2px 4px rgba(0, 0, 0, 0.16),
+                0 8px 22px rgba(0, 0, 0, 0.24);
+        }
+        /* 3-column sub-grid */
+        .hero-sub-grid {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: end;
+            gap: clamp(20px, 4vw, 72px);
+            max-width: 1200px;
+            margin-top: clamp(32px, 5vh, 60px);
+        }
+        /* Social rail */
+        .hero-socials-rail {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+        .hero-social-link {
+            color: #0a0a0a;
+            display: block;
+            transition: opacity 0.2s;
+        }
+        .dark .hero-social-link {
+            color: #e5e7eb;
+        }
+        .hero-social-link:hover { opacity: 0.4; }
+        /* CTA buttons */
+        .hero-cta-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            padding: 13px 24px 13px 13px;
+            border: 1.5px solid #0a0a0a;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.65);
+            backdrop-filter: blur(6px);
+            font-family: 'Geist', system-ui, sans-serif;
+            font-size: 15px;
+            font-weight: 500;
+            color: #0a0a0a;
+            text-decoration: none;
+            transition:
+                background 0.2s ease,
+                transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .hero-cta-primary:hover {
+            background: rgba(10,10,10,0.07);
+            color: #0a0a0a;
+            transform: scale(1.045);
+        }
+        .dark .hero-cta-primary {
+            border-color: rgba(229, 231, 235, 0.6);
+            background: rgba(24, 26, 31, 0.6);
+            color: #f9fafb;
+        }
+        .dark .hero-cta-primary:hover {
+            background: rgba(229, 231, 235, 0.12);
+            color: #ffffff;
+            transform: scale(1.045);
+        }
+        .hero-cta-secondary {
+            display: inline-flex;
+            align-items: center;
+            padding: 13px 24px;
+            border: 1.5px solid rgba(10,10,10,0.2);
+            border-radius: 999px;
+            background: rgba(255,255,255,0.45);
+            backdrop-filter: blur(6px);
+            font-family: 'Geist', system-ui, sans-serif;
+            font-size: 15px;
+            font-weight: 500;
+            color: #3a3a38;
+            text-decoration: none;
+            transition:
+                background 0.2s ease,
+                transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .hero-cta-secondary:hover {
+            background: rgba(10,10,10,0.05);
+            color: #0a0a0a;
+            transform: scale(1.045);
+        }
+        .dark .hero-cta-secondary {
+            border-color: rgba(229, 231, 235, 0.25);
+            background: rgba(24, 26, 31, 0.5);
+            color: #d1d5db;
+        }
+        .dark .hero-cta-secondary:hover {
+            background: rgba(229, 231, 235, 0.08);
+            color: #ffffff;
+            transform: scale(1.045);
+        }
+        .dark .hero-soft-section [data-hero-primary] { color: #f9fafb !important; }
+        .dark .hero-soft-section [data-hero-muted] { color: #9ca3af !important; }
+        /*
+         * Más intensidad sólo en el tinte del glifo (+ halo muy suave), sin fondo propio:
+         * el mint/lime del shader queda más atrás contra un gris casi tinta / blanco papel.
+         */
+        .hero-soft-section [data-hero-body] {
+            font-weight: 400;
+            color: #1a1b19 !important;
+            text-shadow:
+                0 0 14px rgba(255, 255, 255, 0.52),
+                0 0 32px rgba(255, 255, 255, 0.22);
+        }
+        .dark .hero-soft-section [data-hero-body] {
+            color: #eef0f4 !important;
+            text-shadow:
+                0 0 14px rgba(12, 14, 18, 0.45),
+                0 0 28px rgba(0, 0, 0, 0.2);
+        }
+        .dark .hero-soft-section [data-hero-divider] { background: rgba(229, 231, 235, 0.25) !important; }
+        .dark .hero-soft-section [data-hero-cta-icon] {
+            background: #f9fafb !important;
+            color: #181a1f !important;
+        }
+        /* Availability pulse dot */
+        .hero-dot-pulse {
+            display: inline-block;
+            width: 7px; height: 7px;
+            border-radius: 999px;
+            background: #22c55e;
+            box-shadow: 0 0 0 0 rgba(34,197,94,0.45);
+            animation: hero-dot-pulse 2.4s ease-in-out infinite;
+            vertical-align: middle;
+            flex-shrink: 0;
+        }
+        @keyframes hero-dot-pulse {
+            0%,100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.45); }
+            50%      { box-shadow: 0 0 0 5px rgba(34,197,94,0); }
+        }
+        /* Two-column hero layout */
+        .hero-layout {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: end;
+            gap: clamp(32px, 4vw, 64px);
+        }
+        .hero-image-col {
+            /* Desde un poco bajo el header fijo hasta el borde inferior (card servicios).
+               El containing block es el div content-layer (position:relative). */
+            position: absolute;
+            top: clamp(72px, 5.25rem, 92px);
+            bottom: -2px;
+            right: clamp(20px, 5.5vw, 88px);
+            width: min(62vw, 1000px);
+            z-index: 2;
+            display: block;
+            pointer-events: none;
+        }
 
-                    <a href="{{ env('APP_GITHUB_URL') }}" target="_blank" class="group text-gray-500 hover:text-black dark:text-gray-400 dark:hover:text-white transition" title="GitHub">
-                        <x-icons.github class="w-7 h-7" />
-                    </a>
-                    <a href="{{ env('APP_LINKEDIN_URL') }}" target="_blank" class="group text-gray-500 hover:text-[#0077b5] dark:text-gray-400 dark:hover:text-[#0077b5] transition" title="LinkedIn">
-                        <x-icons.linkedin class="w-7 h-7" />
-                    </a>
+        /* Mismo ancho/caja que la foto: el tinte no “ensucia” el hueco del column */
+        .hero-profile-wrap {
+            height: 100%;
+            width: fit-content;
+            max-width: 100%;
+            margin-left: auto;
+            position: relative;
+            pointer-events: none;
+            /* isolation: isolate crea un grupo de composición aislado: los blend-modes
+               de ::before/::after operan contra los píxeles internos del grupo (la imagen),
+               no contra el fondo de la página. Donde el PNG tiene alpha=0, la salida del
+               grupo también es transparente → sin tinte sobre el fondo. */
+            isolation: isolate;
+            /* Elipse original; transición más “fuerte” al arrancar desde la esquina (paradas intermedias) */
+            --hero-img-fade: radial-gradient(
+                ellipse 150% 100% at 0% 100%,
+                transparent 0%,
+                transparent 3%,
+                rgba(0, 0, 0, 0.48) 13%,
+                rgba(0, 0, 0, 0.9) 24%,
+                black 52%
+            );
+        }
+
+        .dark .hero-profile-wrap {
+            --hero-img-fade: radial-gradient(
+                ellipse 150% 100% at 0% 100%,
+                transparent 0%,
+                transparent 3%,
+                rgba(0, 0, 0, 0.52) 12%,
+                rgba(0, 0, 0, 0.94) 22%,
+                black 50%
+            );
+        }
+
+        /* Pseudo-elementos de tinte eliminados: el mask-image geométrico no puede
+           seguir el alpha channel del WebP sin causar artefactos (halo, sangrado).
+           La integración visual viene del mask-image fade en la propia imagen
+           + filter: saturate/brightness + el shader WebGL de fondo. */
+
+        .hero-profile-img {
+            display: block;
+            height: 100%;
+            width: auto;
+            max-width: 100%;
+            position: relative;
+            z-index: 0;
+            object-fit: contain;
+            object-position: bottom center;
+
+            /* ── Integración ambiental sin distorsión de color ──
+               mix-blend-mode sobre overlays externos tiñe el fondo en zonas
+               transparentes. hue-rotate con ángulos grandes (>30°) distorsiona
+               los tonos piel. La integración correcta viene del mask-image fade
+               + el shader de fondo: solo necesitamos reducir la saturación y el
+               contraste para que la imagen "retroceda" hacia el entorno. */
+            filter: saturate(0.88) brightness(0.97);
+
+            mask-image: var(--hero-img-fade);
+            -webkit-mask-image: var(--hero-img-fade);
+
+            transition: filter 0.3s ease;
+        }
+        .dark .hero-profile-img {
+            /* En dark mode oscurecemos para integrarnos con el fondo #181a1f */
+            filter: saturate(0.82) brightness(0.80) contrast(1.05);
+        }
+        /* Responsive collapse */
+        @media (max-width: 900px) {
+            .hero-layout {
+                grid-template-columns: 1fr;
+            }
+            .hero-image-col { display: none; }
+        }
+        @media (max-width: 767px) {
+            .hero-sub-grid {
+                grid-template-columns: 1fr !important;
+                gap: 28px !important;
+            }
+            .hero-socials-rail {
+                flex-direction: row !important;
+                gap: 20px !important;
+            }
+            .hero-socials-handle {
+                writing-mode: horizontal-tb !important;
+                transform: none !important;
+            }
+            .hero-status-block { display: none !important; }
+        }
+        @media (max-width: 480px) {
+            .hero-eyebrow-row { display: none; }
+        }
+
+        /*
+         * Paneles de sección: material mate semitransparente + grano SVG (sin blur / sin “cristal”).
+         */
+        .section-glass-panel {
+            /* Grano: --section-matte-grain en resources/css/app.css (:root) */
+            background-color: rgba(244, 245, 248, 0.88);
+            background-image: var(--section-matte-grain);
+            background-size: 160px 160px;
+            background-blend-mode: overlay;
+            border: 2px solid rgba(15, 23, 42, 0.11);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.65),
+                inset 0 -1px 0 rgba(15, 23, 42, 0.05),
+                0 2px 4px rgba(15, 23, 42, 0.04),
+                0 10px 32px rgba(15, 23, 42, 0.08);
+        }
+        .dark .section-glass-panel {
+            background-color: rgba(26, 28, 33, 0.86);
+            background-image: var(--section-matte-grain);
+            background-blend-mode: soft-light;
+            border: 2px solid rgba(226, 232, 240, 0.14);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.09),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.45),
+                0 4px 6px rgba(0, 0, 0, 0.2),
+                0 14px 40px rgba(0, 0, 0, 0.28);
+        }
+        /* Mayor especificidad que spotlight.css (.js-spotlight-card) */
+        .js-spotlight-card.section-inner-card,
+        .skill-card.section-inner-card {
+            background-color: rgba(250, 250, 252, 0.9) !important;
+            background-image: var(--section-matte-grain) !important;
+            background-size: 144px 144px !important;
+            background-blend-mode: overlay !important;
+            border: 2px solid rgba(15, 23, 42, 0.1) !important;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.75),
+                inset 0 -1px 0 rgba(15, 23, 42, 0.04),
+                0 1px 2px rgba(15, 23, 42, 0.05),
+                0 6px 18px rgba(15, 23, 42, 0.06);
+        }
+        .dark .js-spotlight-card.section-inner-card,
+        .dark .skill-card.section-inner-card {
+            background-color: rgba(34, 36, 41, 0.9) !important;
+            background-image: var(--section-matte-grain) !important;
+            background-blend-mode: soft-light !important;
+            border: 2px solid rgba(226, 232, 240, 0.12) !important;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.08),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.4),
+                0 2px 4px rgba(0, 0, 0, 0.18),
+                0 8px 22px rgba(0, 0, 0, 0.22);
+        }
+        .js-spotlight-card.section-inner-card:hover,
+        .skill-card.section-inner-card:hover {
+            border-color: rgba(15, 23, 42, 0.18) !important;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.85),
+                inset 0 -1px 0 rgba(15, 23, 42, 0.05),
+                0 2px 3px rgba(15, 23, 42, 0.06),
+                0 10px 28px rgba(15, 23, 42, 0.1);
+        }
+        .dark .js-spotlight-card.section-inner-card:hover,
+        .dark .skill-card.section-inner-card:hover {
+            border-color: rgba(226, 232, 240, 0.2) !important;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.45),
+                0 4px 8px rgba(0, 0, 0, 0.22),
+                0 12px 36px rgba(0, 0, 0, 0.34);
+        }
+        /* Servicios: panel y tarjetas algo más fríos/grisáceos (solo esta sección) */
+        #services.section-glass-panel {
+            background-color: rgba(228, 231, 236, 0.9);
+        }
+        .dark #services.section-glass-panel {
+            background-color: rgba(40, 42, 48, 0.88);
+        }
+        #services .js-spotlight-card.section-inner-card {
+            background-color: rgba(236, 240, 248, 0.93) !important;
+            border: 2px solid rgba(100, 116, 139, 0.24) !important;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.82),
+                inset 0 -1px 0 rgba(71, 85, 105, 0.06),
+                0 1px 2px rgba(51, 65, 85, 0.05),
+                0 6px 18px rgba(51, 65, 85, 0.07);
+        }
+        .dark #services .js-spotlight-card.section-inner-card {
+            background-color: rgba(44, 47, 54, 0.9) !important;
+            border: 2px solid rgba(148, 163, 184, 0.2) !important;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.07),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.38),
+                0 2px 4px rgba(0, 0, 0, 0.16),
+                0 8px 22px rgba(0, 0, 0, 0.24);
+        }
+        #services .js-spotlight-card.section-inner-card:hover {
+            border-color: rgba(71, 85, 105, 0.38) !important;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.92),
+                inset 0 -1px 0 rgba(71, 85, 105, 0.08),
+                0 2px 4px rgba(51, 65, 85, 0.07),
+                0 10px 30px rgba(51, 65, 85, 0.12);
+        }
+        .dark #services .js-spotlight-card.section-inner-card:hover {
+            border-color: rgba(148, 163, 184, 0.32) !important;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.09),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.48),
+                0 4px 8px rgba(0, 0, 0, 0.2),
+                0 12px 38px rgba(0, 0, 0, 0.4);
+        }
+    </style>
+
+    <section id="home" class="hero-soft-section">
+
+        {{-- Content layer --}}
+        <div style="position:relative;z-index:2;display:flex;flex-direction:column;min-height:82svh;">
+
+            {{-- Spacer matching the fixed navbar height (~68px) --}}
+            <div style="flex-shrink:0;height:68px;"></div>
+
+            {{-- Vertically centred main body --}}
+            <div style="flex:1;display:flex;flex-direction:column;justify-content:center;
+                        padding:0 clamp(20px,5.5vw,88px) clamp(28px,4vh,56px);">
+
+                <div class="hero-layout">
+
+                {{-- LEFT: text content --}}
+                <div>
+
+                {{-- Eyebrow: status pill --}}
+                <div class="hero-eyebrow-row"
+                     style="display:flex;align-items:center;gap:10px;margin-bottom:clamp(22px,3.5vh,46px);">
+                    <span class="hero-dot-pulse"></span>
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:12px;
+                                 letter-spacing:0.1em;text-transform:uppercase;
+                                 color:#0a0a0a;font-weight:600;" data-hero-primary>Disponible</span>
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:12px;
+                                 letter-spacing:0.1em;color:#7a7a76;" data-hero-muted>· Sevilla · UTC+1</span>
                 </div>
-            </div>
-            
-            <div class="flex justify-center lg:justify-end relative order-1 lg:order-2 lg:col-span-5 mb-10 lg:mb-0">
-                <div class="relative w-56 h-56 sm:w-64 sm:h-64 lg:w-80 lg:h-80">
-                    <div class="absolute top-0 right-0 w-48 h-48 sm:w-56 sm:h-56 lg:w-72 lg:h-72 bg-indigo-200 dark:bg-indigo-900 rounded-full blur-3xl opacity-40"></div>
-                    
-                    <div class="js-profile-ring profile-ring relative w-full h-full rounded-full border-4 border-white dark:border-gray-800 shadow-xl bg-gray-100 dark:bg-gray-800 cursor-pointer">
-                        <div class="absolute inset-0 rounded-full overflow-hidden">
-                            <img src="{{ asset('img/me-light.webp') }}" onerror="this.src='{{ asset('img/logo.png') }}'" alt="Carlos Codex" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-100 dark:opacity-0">
-                            <img src="{{ asset('img/me.webp') }}" onerror="this.src='{{ asset('img/logo.png') }}'" alt="Carlos Codex" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0 dark:opacity-100">
+
+                {{-- Big editorial headline --}}
+                <h1 style="font-family:'Geist',system-ui,sans-serif;
+                            font-weight:600;
+                            font-size:clamp(44px,8.5vw,124px);
+                            line-height:1.03;
+                            letter-spacing:-0.035em;
+                            color:#0a0a0a;
+                            margin:0;" data-hero-primary>
+                    <span class="hero-headline-line"><span class="hero-title-accent">Dando</span>&nbsp;<span class="hero-hl">vida</span></span>
+                    <span class="hero-headline-line">a &nbsp;<span class="hero-hl">tus ideas</span></span>
+                </h1>
+
+                {{-- Sub-grid: socials rail | copy+CTA | status --}}
+                <div class="hero-sub-grid">
+
+                    {{-- Social icons (vertical rail) --}}
+                    <div class="hero-socials-rail">
+                        <a href="{{ env('APP_GITHUB_URL', '#') }}"
+                           target="_blank" rel="noopener noreferrer"
+                           class="hero-social-link" title="GitHub">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2c-3.2.69-3.87-1.36-3.87-1.36-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.69 1.25 3.34.95.1-.74.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.18.91-.25 1.89-.38 2.86-.38s1.95.13 2.86.38c2.18-1.49 3.14-1.18 3.14-1.18.62 1.58.23 2.75.11 3.04.74.81 1.18 1.84 1.18 3.1 0 4.42-2.69 5.4-5.26 5.68.41.36.78 1.06.78 2.15v3.18c0 .31.21.67.8.56C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/>
+                            </svg>
+                        </a>
+                        <a href="{{ env('APP_LINKEDIN_URL', '#') }}"
+                           target="_blank" rel="noopener noreferrer"
+                           class="hero-social-link" title="LinkedIn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.22 8.5h4.56V23H.22V8.5zM8.34 8.5h4.37v1.98h.06c.61-1.15 2.1-2.36 4.32-2.36 4.62 0 5.47 3.04 5.47 7v7.88h-4.56v-6.99c0-1.67-.03-3.82-2.33-3.82-2.33 0-2.69 1.82-2.69 3.7V23H8.34V8.5z"/>
+                            </svg>
+                        </a>
+                        <div style="width:1px;height:28px;background:rgba(10,10,10,0.15);" data-hero-divider></div>
+                        <span class="hero-socials-handle"
+                              style="font-family:'JetBrains Mono',monospace;font-size:10px;
+                                     letter-spacing:0.14em;color:#7a7a76;
+                                     writing-mode:vertical-rl;transform:rotate(180deg);
+                                     user-select:none;" data-hero-muted>@carlos.codex</span>
+                    </div>
+
+                    {{-- Description + call-to-action buttons --}}
+                    <div>
+                        <p style="font-size:clamp(15px,1.2vw,17px);line-height:1.65;
+                                  max-width:460px;margin:0;
+                                  font-family:'Geist',system-ui,sans-serif;" data-hero-body>
+                            Ingeniero full‑stack:<br>
+                            Construyo aplicaciones web y móvil, sistemas y los pequeños detalles
+                            que hacen que un producto se sienta cuidado.
+                        </p>
+                        <div style="margin-top:28px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+                            <a href="#projects" class="hero-cta-primary">
+                                <span style="width:34px;height:34px;border-radius:999px;
+                                             background:#0a0a0a;color:#fff;
+                                             display:inline-flex;align-items:center;
+                                             justify-content:center;font-size:16px;
+                                             flex-shrink:0;" data-hero-cta-icon>↗</span>
+                                Ver proyectos
+                            </a>
+                            <a href="#contact" class="hero-cta-secondary">Contactar</a>
                         </div>
                     </div>
 
-                    <div class="absolute bottom-2 left-0 sm:bottom-4 sm:left-0 bg-white dark:bg-gray-800 p-3 rounded-full shadow-lg border border-gray-100 dark:border-gray-700 text-indigo-600 dark:text-indigo-400 animate-floating">
-                        <x-icons.laptop class="w-6 h-6 sm:w-8 sm:h-8" />
+                    {{-- Right-aligned status metadata --}}
+                    <div class="hero-status-block"
+                         style="text-align:right;font-family:'JetBrains Mono',monospace;
+                                font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;
+                                color:#7a7a76;line-height:2;" data-hero-muted>
+                        <div style="color:#0a0a0a;font-weight:600;display:flex;align-items:center;
+                                    justify-content:flex-end;gap:7px;margin-bottom:1px;" data-hero-primary>
+                            <span class="hero-dot-pulse"></span>Disponible · Q2 2026
+                        </div>
+                        <div>Sevilla · UTC+1</div>
+                        <div>Laravel · React · PostgreSQL</div>
                     </div>
-                </div>
-            </div>
-        </div>
+
+                </div>{{-- /hero-sub-grid --}}
+
+                </div>{{-- /LEFT text content --}}
+
+                {{-- RIGHT: profile image --}}
+                <div class="hero-image-col">
+                    <div class="hero-profile-wrap">
+                        <img src="{{ asset('img/me-noBg-dark.webp') }}"
+                             alt="Carlos — Fullstack Developer"
+                             class="hero-profile-img"
+                             width="720" height="900"
+                             loading="eager"
+                             decoding="async">
+                    </div>
+                </div>{{-- /hero-image-col --}}
+
+                </div>{{-- /hero-layout --}}
+
+            </div>{{-- /main body --}}
+
+        </div>{{-- /content layer --}}
+
     </section>
 
     <!--
@@ -74,7 +565,7 @@
     |  ##########             SERVICIOS SECTION            ##########  |                
     |------------------------------------------------------------------|
     -->
-    <section id="services" class="relative py-24 bg-white dark:bg-gray-900 transition-colors duration-300 overflow-hidden">
+    <section id="services" class="section-glass-panel relative z-10 py-24 transition-colors duration-300 overflow-hidden mx-3 md:mx-6 lg:mx-10 rounded-3xl mb-8">
         <!-- Decoración de fondo suave -->
         <div class="absolute top-0 left-0 -ml-20 -mt-20 w-72 h-72 bg-blue-400/10 dark:bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -104,7 +595,7 @@
             <!-- Grid de Servicios -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
                 <!-- Servicio 1: Portfolio -->
-                <div class="js-spotlight-card group !bg-gray-50 dark:!bg-gray-800/40 p-8 rounded-2xl border border-gray-100 dark:border-gray-700/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+                <div class="js-spotlight-card section-inner-card group p-8 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
                     <div class="w-14 h-14 bg-white dark:bg-gray-800 rounded-xl shadow-sm flex items-center justify-center mb-6 text-indigo-500 group-hover:scale-110 transition-transform duration-300">
                         <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
                     </div>
@@ -117,7 +608,7 @@
                 </div>
 
                 <!-- Servicio 2: ERP & CRM -->
-                <div class="js-spotlight-card group !bg-gray-50 dark:!bg-gray-800/40 group bg-gray-50 dark:bg-gray-800/40 p-8 rounded-2xl border border-gray-100 dark:border-gray-700/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+                <div class="js-spotlight-card section-inner-card group p-8 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
                     <div class="w-14 h-14 bg-white dark:bg-gray-800 rounded-xl shadow-sm flex items-center justify-center mb-6 text-indigo-500 group-hover:scale-110 transition-transform duration-300">
                         <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
                     </div>
@@ -130,7 +621,7 @@
                 </div>
 
                 <!-- Servicio 3: Apps Móviles -->
-                <div class="js-spotlight-card group !bg-gray-50 dark:!bg-gray-800/40 group bg-gray-50 dark:bg-gray-800/40 p-8 rounded-2xl border border-gray-100 dark:border-gray-700/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+                <div class="js-spotlight-card section-inner-card group p-8 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
                     <div class="w-14 h-14 bg-white dark:bg-gray-800 rounded-xl shadow-sm flex items-center justify-center mb-6 text-indigo-500 group-hover:scale-110 transition-transform duration-300">
                         <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                     </div>
@@ -180,10 +671,10 @@
 
     <!--
     |------------------------------------------------------------------|
-    |  ##########             SOBRE MI SECTION             ##########  |                
+    |  ##########             SOBRE MI SECTION             ##########  |
     |------------------------------------------------------------------|
     -->
-    <section id="about" class="relative py-24 bg-gray-50 dark:bg-gray-800/30 transition-colors duration-300 overflow-hidden">
+    <section id="about" class="relative py-24 bg-transparent transition-colors duration-300">
         <div class="absolute top-0 right-0 -mr-20 -mt-20 w-72 h-72 bg-indigo-400/10 dark:bg-indigo-600/10 rounded-full blur-3xl pointer-events-none"></div>
         <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-indigo-500/10 dark:bg-indigo-500/18 rounded-full blur-3xl pointer-events-none hidden md:block"></div>
 
@@ -258,11 +749,11 @@
 
     <!--
     |------------------------------------------------------------------|
-    |  ##########              SKILLS SECTION              ##########  |                
+    |  ##########              SKILLS SECTION              ##########  |
     |------------------------------------------------------------------|
     -->
 
-    <section id="skills" x-data="skillsComponent()" class="py-20 bg-gray-50 dark:bg-gray-800 border-y border-gray-100 dark:border-gray-700 transition-colors duration-300">
+    <section id="skills" x-data="skillsComponent()" class="section-glass-panel relative z-10 py-24 transition-colors duration-300 overflow-hidden mx-3 md:mx-6 lg:mx-10 rounded-3xl mt-8 mb-8">
         <div class="max-w-screen-xl px-4 mx-auto relative">
             <div class="mb-12">
                 <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Stack Tecnológico</h2>
@@ -275,7 +766,7 @@
             <!-- Grid Principal (6 Tarjetas) -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <template x-for="(skill, key) in skillsData" :key="key">
-                    <div @click="openModal(key)" class="skill-card js-spotlight-card group cursor-pointer bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-indigo-500/10 hover:shadow-lg hover:border-indigo-400 dark:hover:border-indigo-500 hover:-translate-y-1 flex flex-col h-full relative overflow-hidden">
+                    <div @click="openModal(key)" class="skill-card js-spotlight-card section-inner-card group cursor-pointer rounded-2xl p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 flex flex-col h-full relative overflow-hidden">
                         <div class="flex items-center gap-4 mb-5 relative z-10">
                             <div :class="`p-3 rounded-xl ${skill.bg} ${skill.color} transition-transform group-hover:scale-110`">
                                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -396,10 +887,10 @@
 
     <!--
     |------------------------------------------------------------------|
-    |  ##########             PROJECTS SECTION             ##########  |                
+    |  ##########             PROJECTS SECTION             ##########  |
     |------------------------------------------------------------------|
     -->
-    <section id="projects" class="relative py-24 bg-white dark:bg-gray-900 transition-colors duration-300 overflow-hidden">
+    <section id="projects" class="relative py-24 bg-transparent transition-colors duration-300">
         <div class="absolute top-0 right-0 -mr-20 -mt-20 w-72 h-72 bg-indigo-500/10 dark:bg-indigo-500/18 rounded-full blur-3xl pointer-events-none hidden lg:block"></div>
         <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-indigo-500/10 dark:bg-indigo-500/18 rounded-full blur-3xl pointer-events-none hidden md:block"></div>
         <div class="max-w-screen-xl px-4 mx-auto relative z-10">
@@ -431,11 +922,11 @@
 
     <!--
     |------------------------------------------------------------------|
-    |  ##########             CONTACT SECTION              ##########  |                
+    |  ##########             CONTACT SECTION              ##########  |
     |------------------------------------------------------------------|
     -->
-    <section id="contact" class="py-20 bg-gray-50 dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700 transition-colors duration-300">
-        <div class="max-w-screen-md mx-auto px-4">
+    <section id="contact" class="section-glass-panel relative z-10 py-24 transition-colors duration-300 overflow-hidden mx-3 md:mx-6 lg:mx-10 rounded-3xl mt-8 mb-8">
+        <div class="max-w-screen-md mx-auto px-4 relative z-10">
             
             <!-- Cabecera de la sección -->
             <div class="text-center mb-12">
@@ -476,7 +967,7 @@
             </div>
 
             <!-- Tarjeta del Formulario -->
-            <div class="bg-white dark:bg-gray-900 p-6 sm:p-10 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 relative overflow-hidden">
+            <div class="relative overflow-hidden">
                 
                 <form id="contactForm" action="{{ route('contact.store') }}" method="POST" class="space-y-6 relative z-10" novalidate>
                     @csrf
@@ -541,6 +1032,151 @@
     |------------------------------------------------------------------|
 -->
 @push('scripts')
+<script>
+/* ================================================================
+   HERO FLUID BACKGROUND — WebGL domain-warped fluid field
+   Translated from hero-soft.jsx (FluidField component).
+   Palette: mint cyan → acid lime over white paper.
+   ================================================================ */
+(function () {
+    const canvas = document.getElementById('hero-fluid-canvas');
+    if (!canvas) return;
+
+    const gl = canvas.getContext('webgl', { premultipliedAlpha: false, antialias: true });
+    if (!gl) return;
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    /* Canvas is position:fixed and fills the full viewport — track window size,
+       not element size. ResizeObserver on a fixed element is redundant and
+       slightly wasteful (fires for layout reasons unrelated to viewport change). */
+    function resize() {
+        canvas.width  = Math.floor(window.innerWidth  * dpr);
+        canvas.height = Math.floor(window.innerHeight * dpr);
+        gl.viewport(0, 0, canvas.width, canvas.height);
+    }
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+
+    /* ── Shaders ── */
+    const vsSrc = `attribute vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
+
+    const fsSrc = `
+        precision highp float;
+        uniform vec2  u_res;
+        uniform float u_time;
+        uniform float u_dark;
+        uniform float u_scroll; /* scrollY / innerHeight — pans the field vertically */
+
+        float noise(vec2 p) {
+            return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
+        }
+
+        void main(){
+            vec2 uv    = gl_FragCoord.xy / u_res.xy;
+            float ratio = u_res.x / u_res.y;
+
+            /* Offset vertical coordinate by scroll so the pattern pans with the page.
+               WebGL's y-axis runs bottom→top (opposite to CSS), so we subtract:
+               scrolling down increases scrollY → decreases p.y → samples lower
+               in the virtual field → pattern moves up, matching page content. */
+            vec2 p = uv;
+            p.x   *= ratio;
+            p.y   -= u_scroll;
+
+            float t = u_time * 0.25;
+
+            /* Domain warp — liquid flow */
+            vec2 shift = p;
+            for (float i = 1.0; i < 3.0; i++) {
+                shift.x += 0.35 / i * sin(i * 1.8 * p.y + t);
+                shift.y += 0.30 / i * cos(i * 1.8 * p.x + t);
+            }
+
+            /* Diagonal band: top-right → bottom-left */
+            float diagonal = shift.x + shift.y * ratio;
+            float target   = ratio * 1.0;
+            float mask     = smoothstep(0.9, 0.0, abs(diagonal - target));
+
+            /* Colour drift along the band */
+            float mixer     = smoothstep(0.2, 0.8, uv.x + sin(t * 0.5) * 0.2);
+            vec3  cA        = vec3(0.62, 0.96, 0.86);   /* mint cyan  */
+            vec3  cB        = vec3(0.74, 0.97, 0.25);   /* acid lime  */
+            vec3  fluid     = mix(cA, cB, mixer);
+
+            vec3  lightBg   = vec3(1.0, 1.0, 1.0);
+            vec3  darkBg    = vec3(0.0941, 0.1020, 0.1216);
+            vec3  bg        = mix(lightBg, darkBg, u_dark);
+            vec3  color     = mix(bg, fluid, mask * 0.95);
+
+            /* Subtle film grain */
+            float grain = (noise(uv + fract(u_time)) - 0.5) * 0.05;
+            color += grain;
+
+            gl_FragColor = vec4(color, 1.0);
+        }
+    `;
+
+    function mkShader(type, src) {
+        const s = gl.createShader(type);
+        gl.shaderSource(s, src);
+        gl.compileShader(s);
+        if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+            console.warn('[hero-fluid] shader error:', gl.getShaderInfoLog(s));
+        }
+        return s;
+    }
+
+    const prog = gl.createProgram();
+    gl.attachShader(prog, mkShader(gl.VERTEX_SHADER,   vsSrc));
+    gl.attachShader(prog, mkShader(gl.FRAGMENT_SHADER, fsSrc));
+    gl.linkProgram(prog);
+    gl.useProgram(prog);
+
+    /* Full-screen quad */
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+        -1,-1,  1,-1,  -1, 1,
+        -1, 1,  1,-1,   1, 1,
+    ]), gl.STATIC_DRAW);
+    const aLoc = gl.getAttribLocation(prog, 'a');
+    gl.enableVertexAttribArray(aLoc);
+    gl.vertexAttribPointer(aLoc, 2, gl.FLOAT, false, 0, 0);
+
+    const uRes    = gl.getUniformLocation(prog, 'u_res');
+    const uTime   = gl.getUniformLocation(prog, 'u_time');
+    const uDark   = gl.getUniformLocation(prog, 'u_dark');
+    const uScroll = gl.getUniformLocation(prog, 'u_scroll');
+
+    const t0    = performance.now();
+    const speed = 0.06;
+
+    /* Pause when tab is hidden to save GPU */
+    let paused = false;
+    document.addEventListener('visibilitychange', () => {
+        paused = document.hidden;
+        if (!paused) requestAnimationFrame(frame);
+    });
+
+    function frame() {
+        if (paused) return;
+        const t      = (performance.now() - t0) / 1000 * speed * 8.0;
+        const isDark = document.documentElement.classList.contains('dark') ? 1 : 0;
+        /* Normalize by innerHeight so one viewport-scroll = +1 in shader space.
+           Reading scrollY inside rAF is non-blocking — no layout reflow. */
+        const scroll = window.scrollY / window.innerHeight;
+        gl.uniform2f(uRes,    canvas.width, canvas.height);
+        gl.uniform1f(uTime,   t);
+        gl.uniform1f(uDark,   isDark);
+        gl.uniform1f(uScroll, scroll);
+        gl.drawArrays(gl.TRIANGLES, 0, 6);
+        requestAnimationFrame(frame);
+    }
+    frame();
+})();
+/* ================================================================ */
+</script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.getElementById('contactForm');
