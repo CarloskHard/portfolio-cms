@@ -457,6 +457,32 @@
                 0 4px 8px rgba(0, 0, 0, 0.2),
                 0 12px 38px rgba(0, 0, 0, 0.4);
         }
+
+        /* ── Scroll Reveal ─────────────────────────────────────────────
+           Sólo activa los estados ocultos cuando JS ya cargó (.reveal-ready),
+           así los elementos son visibles aunque JS falle (graceful degradation).
+        ──────────────────────────────────────────────────────────────── */
+        .reveal-ready [data-reveal] {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-ready [data-reveal].is-revealed {
+            opacity: 1 !important;
+            transform: none !important;
+        }
+        [data-reveal-delay="100"] { transition-delay: 100ms; }
+        [data-reveal-delay="150"] { transition-delay: 150ms; }
+        [data-reveal-delay="200"] { transition-delay: 200ms; }
+        [data-reveal-delay="300"] { transition-delay: 300ms; }
+
+        /* ── Mobile Skill CTA ──────────────────────────────────────────
+           En móvil (hover: none), muestra el hint cuando la card está en pantalla.
+        ──────────────────────────────────────────────────────────────── */
+        .skill-card.is-in-view .skill-cta-hint {
+            opacity: 1 !important;
+        }
     </style>
 
     <section id="home" class="hero-soft-section">
@@ -596,7 +622,7 @@
         <div class="max-w-screen-xl px-4 mx-auto relative z-10">
             
             <!-- Cabecera de la sección -->
-            <div class="text-center max-w-3xl mx-auto mb-16">
+            <div class="text-center max-w-3xl mx-auto mb-16" data-reveal>
                 <div class="flex items-center justify-center gap-2 mb-4">
                     <span class="relative flex h-3 w-3">
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
@@ -619,7 +645,7 @@
             <!-- Grid de Servicios -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
                 <!-- Servicio 1: Portfolio -->
-                <div class="js-spotlight-card section-inner-card group p-8 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+                <div class="js-spotlight-card section-inner-card group p-8 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden" data-reveal data-reveal-delay="100">
                     <div class="w-14 h-14 bg-white dark:bg-gray-800 rounded-xl shadow-sm flex items-center justify-center mb-6 text-indigo-500 group-hover:scale-110 transition-transform duration-300">
                         <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
                     </div>
@@ -632,7 +658,7 @@
                 </div>
 
                 <!-- Servicio 2: ERP & CRM -->
-                <div class="js-spotlight-card section-inner-card group p-8 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+                <div class="js-spotlight-card section-inner-card group p-8 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden" data-reveal data-reveal-delay="200">
                     <div class="w-14 h-14 bg-white dark:bg-gray-800 rounded-xl shadow-sm flex items-center justify-center mb-6 text-indigo-500 group-hover:scale-110 transition-transform duration-300">
                         <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
                     </div>
@@ -645,7 +671,7 @@
                 </div>
 
                 <!-- Servicio 3: Apps Móviles -->
-                <div class="js-spotlight-card section-inner-card group p-8 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+                <div class="js-spotlight-card section-inner-card group p-8 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden" data-reveal data-reveal-delay="300">
                     <div class="w-14 h-14 bg-white dark:bg-gray-800 rounded-xl shadow-sm flex items-center justify-center mb-6 text-indigo-500 group-hover:scale-110 transition-transform duration-300">
                         <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                     </div>
@@ -659,7 +685,7 @@
             </div>
 
             <!-- Banner de Oferta y CTA -->
-            <div class="relative bg-gradient-to-br from-indigo-50 via-white to-blue-50 dark:from-gray-800 dark:via-gray-800 dark:to-indigo-900/30 rounded-3xl p-8 md:p-12 border border-indigo-100 dark:border-gray-700 overflow-hidden shadow-lg">
+            <div class="relative bg-gradient-to-br from-indigo-50 via-white to-blue-50 dark:from-gray-800 dark:via-gray-800 dark:to-indigo-900/30 rounded-3xl p-8 md:p-12 border border-indigo-100 dark:border-gray-700 overflow-hidden shadow-lg" data-reveal data-reveal-delay="150">
                 <!-- Decoración fondo banner -->
                 <div class="absolute right-0 top-0 w-64 h-64 bg-gradient-to-br from-indigo-400 to-blue-500 opacity-10 dark:opacity-20 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
                 
@@ -707,7 +733,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
                 
                 <!-- Columna izquierda decorativa -->
-                <div class="lg:col-span-5 relative group lg:pr-10"> 
+                <div class="lg:col-span-5 relative group lg:pr-10" data-reveal>
                     <div class="absolute inset-0 bg-gradient-to-tr from-indigo-500 to-blue-500 rounded-2xl transform rotate-3 scale-105 opacity-20 dark:opacity-40 transition-transform duration-500 group-hover:rotate-6"></div>
                     <div class="relative overflow-hidden rounded-2xl shadow-xl transition-transform duration-500 group-hover:-translate-y-2 border border-white/50 dark:border-gray-700 bg-white dark:bg-gray-800 p-2">
                         <div class="overflow-hidden rounded-xl">
@@ -727,7 +753,7 @@
                 </div>
 
                 <!-- Columna derecha -->
-                <div class="lg:col-span-7">
+                <div class="lg:col-span-7" data-reveal data-reveal-delay="150">
                     <!-- Badge con pulso sutil -->
                     <div class="flex items-center gap-2 mb-4">
                         <span class="relative flex h-3 w-3">
@@ -780,7 +806,7 @@
 
     <section id="skills" x-data="skillsComponent()" class="section-glass-panel relative z-10 py-24 transition-colors duration-300 overflow-hidden mx-3 md:mx-6 lg:mx-10 rounded-3xl mt-8 mb-8">
         <div class="max-w-screen-xl px-4 mx-auto relative">
-            <div class="mb-12">
+            <div class="mb-12" data-reveal>
                 <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Stack Tecnológico</h2>
                 <div class="w-20 h-1.5 bg-indigo-600 mt-4 rounded-full"></div>
                 <p class="text-gray-600 dark:text-gray-300 max-w-4xl mt-4 text-lg leading-relaxed">
@@ -791,7 +817,7 @@
             <!-- Grid Principal (6 Tarjetas) -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <template x-for="(skill, key) in skillsData" :key="key">
-                    <div @click="openModal(key)" class="skill-card js-spotlight-card section-inner-card group cursor-pointer rounded-2xl p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 flex flex-col h-full relative overflow-hidden">
+                    <div @click="openModal(key)" class="skill-card js-spotlight-card section-inner-card group cursor-pointer rounded-2xl p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 flex flex-col h-full relative overflow-hidden" data-reveal>
                         <div class="flex items-center gap-4 mb-5 relative z-10">
                             <div :class="`p-3 rounded-xl ${skill.bg} ${skill.color} transition-transform group-hover:scale-110`">
                                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -808,7 +834,7 @@
                             <span x-show="skill.technologies.length > 4" class="flex items-center px-2 py-1 text-xs font-bold text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 rounded" x-text="`+${skill.technologies.length - 4}`"></span>
                         </div>
 
-                        <div class="mt-5 pt-4 border-t border-gray-100 dark:border-gray-800 flex justify-between items-center text-sm font-medium text-indigo-600 dark:text-indigo-400 opacity-0 group-hover:opacity-100 transition-opacity relative z-10">
+                        <div class="skill-cta-hint mt-5 pt-4 border-t border-gray-100 dark:border-gray-800 flex justify-between items-center text-sm font-medium text-indigo-600 dark:text-indigo-400 opacity-0 group-hover:opacity-100 transition-opacity relative z-10">
                             Ver detalle de tecnologías
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                         </div>
@@ -919,12 +945,12 @@
         <div class="absolute top-0 right-0 -mr-20 -mt-20 w-72 h-72 bg-indigo-500/10 dark:bg-indigo-500/18 rounded-full blur-3xl pointer-events-none hidden lg:block"></div>
         <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-indigo-500/10 dark:bg-indigo-500/18 rounded-full blur-3xl pointer-events-none hidden md:block"></div>
         <div class="max-w-screen-xl px-4 mx-auto relative z-10">
-            <div class="mb-16">
+            <div class="mb-16" data-reveal>
                 <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">Proyectos</h2>
                 <div class="w-20 h-1.5 bg-indigo-600 mt-4 rounded-full"></div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" data-reveal data-reveal-delay="100">
                 @forelse($projects->take(3) as $project)
                     
                     <!-- Usamos nuestro nuevo componente de Card -->
@@ -954,7 +980,7 @@
         <div class="max-w-screen-md mx-auto px-4 relative z-10">
             
             <!-- Cabecera de la sección -->
-            <div class="text-center mb-12">
+            <div class="text-center mb-12" data-reveal>
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white tracking-tight">
                     Hablemos de tu proyecto
                 </h2>
@@ -992,7 +1018,7 @@
             </div>
 
             <!-- Tarjeta del Formulario -->
-            <div class="relative overflow-hidden">
+            <div class="relative overflow-hidden" data-reveal data-reveal-delay="150">
                 
                 <form id="contactForm" action="{{ route('contact.store') }}" method="POST" class="space-y-6 relative z-10" novalidate>
                     @csrf
@@ -1365,6 +1391,64 @@
             }
         }
     });
+</script>
+
+<!-- Scroll Reveal + Mobile Skill CTA -->
+<script>
+(function () {
+    'use strict';
+
+    // Activa los estilos CSS de ocultación sólo cuando JS está disponible
+    document.documentElement.classList.add('reveal-ready');
+
+    /* ── Scroll Reveal ─────────────────────────────────────────────── */
+    function setupReveal() {
+        var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-revealed');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+        // Stagger escalonado para las skill cards renderizadas por Alpine
+        var skillGrid = document.querySelector('#skills .grid');
+        if (skillGrid) {
+            Array.from(skillGrid.children).forEach(function (card, i) {
+                if (card.hasAttribute('data-reveal')) {
+                    card.style.transitionDelay = (i * 80) + 'ms';
+                }
+            });
+        }
+
+        document.querySelectorAll('[data-reveal]').forEach(function (el) {
+            observer.observe(el);
+        });
+    }
+
+    /* ── Mobile Skill CTA ──────────────────────────────────────────── */
+    function setupMobileSkillCTA() {
+        // Sólo en dispositivos sin hover (móvil / táctil)
+        if (!window.matchMedia('(hover: none)').matches) return;
+
+        var ctaObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                entry.target.classList.toggle('is-in-view', entry.isIntersecting);
+            });
+        }, { threshold: 0.55 });
+
+        document.querySelectorAll('.skill-card').forEach(function (card) {
+            ctaObserver.observe(card);
+        });
+    }
+
+    /* ── Ejecutar tras Alpine (garantiza que x-for ya renderizó) ───── */
+    document.addEventListener('alpine:initialized', function () {
+        setupReveal();
+        setupMobileSkillCTA();
+    });
+})();
 </script>
 
 <!-- Tarjetas skills técnicas -->
