@@ -3,8 +3,8 @@
     $isHome = request()->routeIs('home');
     $brandMain = config('app.name', 'Portfolio');
     $mail = trim((string) env('APP_CONTACT_EMAIL', ''));
-    $gh = trim((string) env('APP_GITHUB_URL', ''));
-    $li = trim((string) env('APP_LINKEDIN_URL', ''));
+    $gh = trim((string) env('APP_GITHUB_URL', 'https://github.com/CarlosBTav'));
+    $li = trim((string) env('APP_LINKEDIN_URL', 'https://www.linkedin.com/in/carlos-b-6a8a9a2b5/'));
     $tel = trim((string) env('APP_CONTACT_PHONE', ''));
     $loc = trim((string) env('APP_CONTACT_LOCATION', ''));
     $hasFooterContact = $mail !== '' || $gh !== '' || $li !== '' || $tel !== '' || $loc !== '';
