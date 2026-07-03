@@ -21,6 +21,14 @@ jobs:
             set -e
             cd /var/www/portfolio-cms
 
+            # Medida de seguridad: el reset --hard machacaría cualquier cambio
+            # local sin comitear en el servidor, así que abortamos si los hay.
+            if [ -n "$(git status --porcelain)" ]; then
+              echo "❌ Deploy abortado: hay cambios locales sin comitear en el servidor:"
+              git status --short
+              exit 1
+            fi
+
             git remote set-url origin https://github.com/CarlosBTav/Portfolio-with-CRM.git
             git fetch origin main
             git reset --hard origin/main
