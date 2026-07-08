@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" role="img" aria-hidden="true">
+<defs>
+<linearGradient id="g-arquitectura" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#9333ea"/><stop offset="1" stop-color="#c084fc"/>
+</linearGradient>
+<pattern id="p-arquitectura" width="34" height="34" patternUnits="userSpaceOnUse">
+<path d="M34 0H0v34" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="1"/>
+</pattern>
+<radialGradient id="v-arquitectura" cx="0.85" cy="0.1" r="1">
+<stop offset="0" stop-color="rgba(255,255,255,0.28)"/><stop offset="0.6" stop-color="rgba(255,255,255,0)"/>
+</radialGradient>
+</defs>
+<rect width="800" height="320" fill="url(#g-arquitectura)"/>
+<rect width="800" height="320" fill="url(#p-arquitectura)"/>
+<rect width="800" height="320" fill="url(#v-arquitectura)"/>
+<circle cx="120" cy="260" r="150" fill="rgba(255,255,255,0.06)"/>
+<circle cx="700" cy="60" r="110" fill="rgba(255,255,255,0.08)"/>
+<g transform="translate(316,76) scale(7)" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+</g>
+</svg>

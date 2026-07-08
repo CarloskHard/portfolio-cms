@@ -26,12 +26,14 @@
         })();
     </script>
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,600,800&display=swap" rel="stylesheet" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    {{-- Inyección temprana por vista (preloads dependientes de tema, etc.) --}}
+    @stack('head')
+
+    {{-- Fonts: proveedor único (bunny.net, GDPR-friendly) y una sola request.
+         Pesos ajustados a los realmente usados (Geist 300 eliminado; Figtree 500/700
+         añadidos: se usaban vía Tailwind pero el navegador los sintetizaba). --}}
+    <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800|geist:400,500,600,700,800|jetbrains-mono:400,500,600,700&display=swap" rel="stylesheet" />
 
     <!-- Speculation Rules: prerender public pages on hover (Chromium-only, safely ignored elsewhere) -->
     <script type="speculationrules">
@@ -60,6 +62,9 @@
         'resources/js/public-layout.js',
         'resources/js/spotlight.js',
     ])
+
+    {{-- Estilos específicos de cada vista (después del CSS base para mantener la cascada) --}}
+    @stack('styles')
 </head>
 <body class="@yield('body-class','antialiased bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 font-sans flex flex-col min-h-dynamic transition-colors duration-300')">
     
@@ -76,12 +81,12 @@
     <!-- Incluimos el pie de página -->
     @include('partials.footer')
 
-    <!-- BOTÓN SCROLL TO TOP -->
-    <div id="scrollToTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="fixed right-8 z-[80] bottom-8 opacity-0 pointer-events-none translate-y-10">
-        <div class="h-12 w-12 rounded-full bg-indigo-600 hover:bg-indigo-500 dark:bg-indigo-600 dark:hover:bg-indigo-500 cursor-pointer flex items-center justify-center shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 transition-colors duration-300" role="button" tabindex="0">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="m18 15-6-6-6 6"></path></svg>
-        </div>
-    </div>
+    {{-- BOTÓN SCROLL TO TOP: <button> real → operable con Enter/Espacio y expuesto correctamente a lectores --}}
+    <button type="button" id="scrollToTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" aria-label="Volver arriba" class="fixed right-8 z-[80] bottom-8 opacity-0 pointer-events-none translate-y-10">
+        <span class="h-12 w-12 rounded-full bg-indigo-600 hover:bg-indigo-500 dark:bg-indigo-600 dark:hover:bg-indigo-500 cursor-pointer flex items-center justify-center shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 transition-colors duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-white" aria-hidden="true"><path d="m18 15-6-6-6 6"></path></svg>
+        </span>
+    </button>
 
 
     <!-- Espacio para inyectar scripts específicos de cada vista -->

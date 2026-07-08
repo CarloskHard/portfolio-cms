@@ -3,7 +3,8 @@
 
 @props([
     'images' => [],
-    'fallback' => asset('img/logo.svg')
+    'fallback' => asset('img/logo.svg'),
+    'label' => null, {{-- Nombre del proyecto/contexto para alt descriptivo --}}
 ])
 
 <div x-data="{
@@ -45,22 +46,27 @@
              :style="'transform: translateX(-' + (currentIndex * 100) + '%)'">
             @foreach($images as $img)
                 <div class="w-full h-full flex-shrink-0">
-                    <img src="{{ asset($img) }}" class="w-full h-full object-cover" alt="Imagen del carrusel">
+                    {{-- lazy + dimensiones (16:9): no compite con el LCP y evita CLS --}}
+                    <img src="{{ asset($img) }}"
+                         class="w-full h-full object-cover"
+                         alt="{{ $label ? ($loop->count > 1 ? "{$label} — imagen {$loop->iteration} de {$loop->count}" : $label) : 'Imagen del proyecto' }}"
+                         width="800" height="450"
+                         loading="lazy" decoding="async">
                 </div>
             @endforeach
         </div>
 
         @if(count($images) > 1)
             <!-- Botón Izquierda -->
-            <button @click.prevent.stop="prev()" 
+            <button @click.prevent.stop="prev()" type="button" aria-label="Imagen anterior"
                     class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/55 hover:bg-black/75 text-white p-2 rounded-full transition-all duration-200 z-20 opacity-100 md:opacity-0 md:group-hover:opacity-100">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
             </button>
-            
+
             <!-- Botón Derecha -->
-            <button @click.prevent.stop="next()" 
+            <button @click.prevent.stop="next()" type="button" aria-label="Imagen siguiente"
                     class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/55 hover:bg-black/75 text-white p-2 rounded-full transition-all duration-200 z-20 opacity-100 md:opacity-0 md:group-hover:opacity-100">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
             </button>
             
             <!-- Contador -->
@@ -69,6 +75,6 @@
             </div>
         @endif
     @else
-        <img src="{{ $fallback }}" class="w-16 h-16 opacity-50">
+        <img src="{{ $fallback }}" class="w-16 h-16 opacity-50" alt="" width="64" height="64" loading="lazy">
     @endif
 </div>

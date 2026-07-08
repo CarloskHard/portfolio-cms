@@ -30,6 +30,8 @@ export default defineConfig({
                 'resources/js/ai-dots-touch.js',
                 'resources/js/documentation-notes.js',
                 'resources/js/public-faq-accordion.js',
+                'resources/css/home.css',
+                'resources/js/home-hero.js',
             ],
             refresh: true,
         }),

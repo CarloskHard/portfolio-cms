@@ -291,6 +291,7 @@
 
 <nav
     id="site-redesign-nav"
+    aria-label="Principal"
     x-data="{
         scrolled: typeof window !== 'undefined' && window.scrollY > 20,
         open: false,
@@ -298,32 +299,28 @@
         isAboutPage: @json($isAbout),
         activeHomeSection: null,
         init() {
-            const syncScroll = () => {
-                this.scrolled = window.scrollY > 20;
-                this.updateHomeSection();
-            };
+            {{-- Solo un boolean barato en scroll; el scrollspy va por IntersectionObserver
+                 (sin getBoundingClientRect por evento → sin layout thrash) --}}
+            const syncScroll = () => { this.scrolled = window.scrollY > 20; };
             window.addEventListener('scroll', syncScroll, { passive: true });
-            window.addEventListener('resize', syncScroll, { passive: true });
             syncScroll();
-        },
-        updateHomeSection() {
-            if (!this.isHome) {
-                this.activeHomeSection = null;
-                return;
+
+            if (this.isHome && 'IntersectionObserver' in window) {
+                {{-- Banda de 1px en el centro del viewport: la sección que la contiene es la activa --}}
+                const io = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            this.activeHomeSection = entry.target.id;
+                        } else if (this.activeHomeSection === entry.target.id) {
+                            this.activeHomeSection = null;
+                        }
+                    });
+                }, { rootMargin: '-50% 0px -50% 0px', threshold: 0 });
+                ['services', 'projects', 'about'].forEach((id) => {
+                    const el = document.getElementById(id);
+                    if (el) io.observe(el);
+                });
             }
-            const trackedIds = ['services', 'projects', 'about'];
-            const tracked = trackedIds
-                .map((id) => ({ id, el: document.getElementById(id) }))
-                .filter((item) => item.el);
-            const refY = window.innerHeight * 0.5;
-            for (const item of tracked) {
-                const r = item.el.getBoundingClientRect();
-                if (refY >= r.top && refY <= r.bottom) {
-                    this.activeHomeSection = item.id;
-                    return;
-                }
-            }
-            this.activeHomeSection = null;
         },
     }"
     @click.outside="open = false"
@@ -374,7 +371,8 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
                     Hablemos
                 </a>
-                <button @click="open = !open" type="button" class="srn-mobile-btn" aria-label="Menú">
+                <button @click="open = !open" type="button" class="srn-mobile-btn" aria-label="Menú"
+                        aria-controls="srn-mobile-menu" :aria-expanded="open.toString()">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path x-show="!open" d="M4 6h16M4 12h16M4 18h16"></path>
                         <path x-show="open" style="display:none" d="M6 18L18 6M6 6l12 12"></path>
@@ -383,7 +381,8 @@
             </div>
         </div>
 
-        <div class="srn-mobile" :class="{ 'is-open': open }">
+        {{-- inert cuando está cerrado: los enlaces quedan fuera del tab-order y del árbol de accesibilidad --}}
+        <div id="srn-mobile-menu" class="srn-mobile" :class="{ 'is-open': open }" :inert="!open">
             <div>
                 <ul class="srn-mobile-links">
                     <li>

@@ -36,6 +36,10 @@ class SeoController extends Controller
             'Disallow: /projects',
             'Disallow: /clients',
             'Disallow: /messages',
+            // Solo por enlace directo (llevan ademas meta noindex)
+            'Disallow: /cv',
+            'Disallow: /presupuesto',
+            'Disallow: /documentacion',
             '',
             'Sitemap: '.route('seo.sitemap'),
             '',

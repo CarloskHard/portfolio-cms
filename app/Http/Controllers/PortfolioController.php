@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\Project;
-use App\Models\Technology;
+
 use App\Models\DocumentationClientNote;
 use App\Models\QuoteVersion;
 
@@ -13,20 +13,17 @@ class PortfolioController extends Controller
 {
     public function index()
     {
-        // Portada: Pedimos al Modelo 3 proyectos para el "destacados"
-            /* Usamos 'with' (Eager Loading) para traer las tecnologías de golpe
-               y ahorrar consultas a la base de datos (mejor rendimiento).    */
+        /* Portada: solo los 4 proyectos destacados que la vista muestra
+           (antes se traían todos y la vista descartaba el resto).
+           Eager loading para evitar N+1 en tecnologías y enlaces. */
         $projects = Project::with(['technologies', 'links'])
                     ->where('visibility', 'public')
                     ->orderBy('sort_order')
                     ->orderBy('id')
+                    ->take(4)
                     ->get();
 
-        // Traemos todas las tecnologías para la sección de skills
-        $technologies = Technology::all();
-
-        // Devolvemos la vista (el HTML) pasándole los datos
-        return view('public.home', compact('projects', 'technologies'));
+        return view('public.home', compact('projects'));
     }
 
     // Método para la página de "Ver todos los proyectos"
