@@ -61,8 +61,8 @@ Este proyecto utiliza **Laravel Sail** (Docker), por lo que no necesitas instala
 
 1.  **Clonar el repositorio:**
     ```bash
-    git clone https://github.com/CarloskHard/portfolio-cms.git
-    cd portfolio-cms
+    git clone git@github.com:CarlosBTav/DevPortfolio.git
+    cd DevPortfolio
     ```
 
 2.  **Instalar dependencias:**

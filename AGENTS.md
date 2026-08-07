@@ -1,4 +1,4 @@
-# AGENTS.md - Portfolio-with-CRM Agent Instructions
+# AGENTS.md - DevPortfolio Agent Instructions
 
 > Correct file name: `AGENTS.md`.
 
@@ -137,7 +137,7 @@ resources/
 ```bash
 # Clone and install
 git clone <repo>
-cd Portfolio-with-CRM
+cd DevPortfolio
 
 # Install PHP dependencies via Docker
 docker run --rm -u "$(id -u):$(id -g)" -v "$(pwd):/var/www/html" \

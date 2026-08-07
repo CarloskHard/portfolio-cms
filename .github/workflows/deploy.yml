@@ -19,7 +19,7 @@ jobs:
           password: ${{ secrets.VPS_PASSWORD }}
           script: |
             set -e
-            cd /var/www/portfolio-cms
+            cd /var/www/DevPortfolio
 
             # Medida de seguridad: el reset --hard machacaría cualquier cambio
             # local sin comitear en el servidor, así que abortamos si los hay.
@@ -29,7 +29,7 @@ jobs:
               exit 1
             fi
 
-            git remote set-url origin https://github.com/CarlosBTav/Portfolio-with-CRM.git
+            git remote set-url origin git@github-portfolio:CarlosBTav/DevPortfolio.git
             git fetch origin main
             git reset --hard origin/main
 

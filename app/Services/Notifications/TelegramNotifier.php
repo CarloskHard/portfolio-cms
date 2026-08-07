@@ -25,7 +25,7 @@ class TelegramNotifier
             return;
         }
 
-        $lines = ['🔥 <b>[portfolio-cms] Error 500 en la web</b>'];
+        $lines = ['🔥 <b>[DevPortfolio] Error 500 en la web</b>'];
 
         if ($method || $url) {
             $lines[] = '🔗 <code>'.$this->escape(trim(($method ? $method.' ' : '').($url ?? ''))).'</code>';

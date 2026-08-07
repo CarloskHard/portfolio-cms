@@ -220,8 +220,8 @@ composer run dev
 3. **Clone your repository**
    ```bash
    cd /var/www
-   git clone https://github.com/CarlosBTav/Portfolio-with-CRM.git
-   cd Portfolio-with-CRM
+   git clone https://github.com/CarlosBTav/DevPortfolio.git
+   cd DevPortfolio
    ```
 
 4. **Install dependencies**
@@ -250,7 +250,7 @@ composer run dev
 
 8. **Setup cron for background jobs** (if using notifications)
    ```bash
-   * * * * * cd /var/www/Portfolio-with-CRM && php artisan schedule:run >> /dev/null 2>&1
+   * * * * * cd /var/www/DevPortfolio && php artisan schedule:run >> /dev/null 2>&1
    ```
 
 ### **Important: Production Checklist**
