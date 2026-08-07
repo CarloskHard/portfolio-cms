@@ -1,0 +1,1 @@
+/var/www/.ai/rules/no-eloquent-migrations.md

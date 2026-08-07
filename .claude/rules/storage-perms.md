@@ -1,0 +1,1 @@
+/var/www/.ai/rules/storage-perms.md

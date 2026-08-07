@@ -1,9 +1,27 @@
 # AGENTS.md - Portfolio-with-CRM Agent Instructions
 
 > Correct file name: `AGENTS.md`.
->
-> Before applying these project rules, also read the shared guide for all
-> projects in `/var/www/AGENTS_COMMON.md`.
+
+## Shared VPS rules
+
+The rules shared by every project under `/var/www` live in `/var/www/.ai/`
+(its own repo). Always read `/var/www/.ai/core.md` — the invariants that
+apply to every session — and check `/var/www/.ai/README.md`, which has the
+full routing table by situation: the SPA pattern, Laravel (Blade, Vite,
+`storage/` permissions, migrations), VPS infrastructure and stack, SEO, error
+pages, login/registration, dashboards, security, the Telegram bot, and the
+new-site checklist.
+
+They are read **by path, on demand**; do not import them with `@` (an
+`@import` loads into context exactly as if the file were pasted here, so it
+would save nothing).
+
+When the user asks you to remember, note, or save something, persist it in
+the file that corresponds — `/var/www/.ai/**` if it applies VPS-wide, or this
+project's documentation if it's local only — and never leave it only in the
+conversation. If you create a new file, add it to the routing table.
+
+**Precedence**: if this file contradicts the shared one, this file wins.
 
 This is the single source of agent instructions for this repository. Do not add
 a separate `AGENT.md`; merge future guidance into this file.
